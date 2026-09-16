@@ -1,1 +1,14 @@
-<section class="page-shell"><h1>Notes form</h1></section>
+<section class="page-shell">
+  <header><span class="eyebrow">Case notes</span><h1>{{ noteId ? 'Edit note' : 'Add investigation note' }}</h1></header>
+  <p *ngIf="loading">Loading note...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p class="success-box" *ngIf="success">{{ success }}</p>
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading">
+    <label><span>Incident ID</span><input type="number" formControlName="incident_id" min="1" /></label>
+    <small *ngIf="form.controls.incident_id.touched && form.controls.incident_id.invalid">An incident ID is required.</small>
+    <label><span>Note</span><textarea rows="7" formControlName="note"></textarea></label>
+    <small *ngIf="form.controls.note.touched && form.controls.note.invalid">Enter a note (up to 5000 characters).</small>
+    <label><span>Recommendation</span><textarea rows="4" formControlName="recommendation"></textarea></label>
+    <div class="actions"><button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : (noteId ? 'Update note' : 'Create note') }}</button><button type="button" class="secondary" (click)="cancel()">Cancel</button></div>
+  </form>
+</section>

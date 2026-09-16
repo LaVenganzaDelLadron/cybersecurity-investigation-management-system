@@ -4,16 +4,19 @@
       <span class="eyebrow">Case notes</span>
       <h1>Investigation notes</h1>
     </div>
-    <button class="primary-btn">Add note</button>
+    <button class="primary-btn" *ngIf="canManage" routerLink="/notes/new">Add note</button>
   </header>
 
   <p *ngIf="loading">Loading notes...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p class="success-box" *ngIf="success">{{ success }}</p>
+  <p *ngIf="!loading && !notes.length">No investigation notes found.</p>
 
   <div class="notes-list">
     <article class="note-card" *ngFor="let note of notes">
       <p>{{ note.note }}</p>
-      <footer>{{ note.recommendation }}</footer>
+      <footer><span>Incident #{{ note.incident_id }}</span><span *ngIf="note.recommendation">{{ note.recommendation }}</span><span *ngIf="note.created_at">{{ note.created_at | date:'medium' }}</span></footer>
+      <div class="card-actions" *ngIf="canManage"><a [routerLink]="['/notes', note.id, 'edit']">Edit</a><button type="button" (click)="deleteNote(note)">Delete</button></div>
     </article>
   </div>
 </section>

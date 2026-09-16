@@ -9,3 +9,7 @@ h1 { margin:8px 0 0; }
 .note-card { background: rgba(14,25,35,0.9); border:1px solid rgba(120,150,180,0.18); border-radius:16px; padding:18px; }
 .note-card p { margin:0 0 10px; color:#dfeafc; }
 .note-card footer { color:#7cc6ff; }
+.note-card footer { display:flex; gap:16px; flex-wrap:wrap; }
+.card-actions { margin-top:14px; display:flex; gap:12px; }
+.card-actions a, .card-actions button { color:#7cc6ff; background:none; border:0; padding:0; cursor:pointer; text-decoration:none; font:inherit; }
+.success-box { color:#8de0ad; }

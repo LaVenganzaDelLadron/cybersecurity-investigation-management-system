@@ -4,19 +4,31 @@
       <span class="eyebrow">Evidence</span>
       <h1>Attachments</h1>
     </div>
-    <button class="primary-btn">Upload</button>
+    <button class="primary-btn" *ngIf="canManage" (click)="startCreate()">Add attachment</button>
   </header>
 
   <p *ngIf="loading">Loading attachments...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p class="success-box" *ngIf="success">{{ success }}</p>
+  <form *ngIf="canManage && formOpen" [formGroup]="form" (ngSubmit)="save()" class="attachment-form">
+    <h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2>
+    <label>Incident ID <input type="number" formControlName="incident_id" min="1" /></label>
+    <label>Filename <input formControlName="filename" /></label>
+    <label>File path or URL <input formControlName="filepath" /></label>
+    <label>File type <input formControlName="filetype" placeholder="application/pdf" /></label>
+    <div><button type="submit">Save</button><button type="button" class="secondary" (click)="cancelEdit()">Cancel</button></div>
+  </form>
 
+  <p *ngIf="!loading && !attachments.length">No attachments found.</p>
   <table class="data-table" *ngIf="!loading && attachments.length">
-    <thead><tr><th>Filename</th><th>Type</th><th>Actions</th></tr></thead>
+    <thead><tr><th>Filename</th><th>Type</th><th>Incident</th><th>Path</th><th *ngIf="canManage">Actions</th></tr></thead>
     <tbody>
       <tr *ngFor="let attachment of attachments">
         <td>{{ attachment.filename }}</td>
         <td>{{ attachment.filetype }}</td>
-        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+        <td>{{ attachment.incident_id ? '#' + attachment.incident_id : 'Unassigned' }}</td>
+        <td>{{ attachment.filepath || '—' }}</td>
+        <td *ngIf="canManage"><button type="button" class="link-button" (click)="startEdit(attachment)">Edit</button><button type="button" class="link-button" (click)="deleteAttachment(attachment)">Delete</button></td>
       </tr>
     </tbody>
   </table>

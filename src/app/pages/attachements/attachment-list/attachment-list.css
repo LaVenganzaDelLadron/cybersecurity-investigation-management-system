@@ -9,3 +9,10 @@ h1 { margin:8px 0 0; }
 .data-table th, .data-table td { text-align:left; padding:12px 14px; border-bottom:1px solid rgba(120,150,180,0.18); }
 .data-table th { color:#9fb9dd; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; }
 a { color:#7cc6ff; text-decoration:none; margin-right:10px; }
+.attachment-form { display:grid; gap:12px; background:rgba(14,25,35,.9); padding:18px; border-radius:14px; margin-bottom:18px; }
+.attachment-form label { display:grid; gap:6px; color:#c9d9ef; }
+.attachment-form input { background:#0a1622; border:1px solid #34506d; border-radius:8px; color:#eaf3ff; padding:9px; }
+.attachment-form button { background:#1a6ef1; border:0; border-radius:8px; color:#fff; padding:9px 13px; margin-right:8px; cursor:pointer; }
+.attachment-form .secondary { background:#263c52; }
+.link-button { background:none; border:0; color:#7cc6ff; cursor:pointer; margin-right:10px; padding:0; }
+.success-box { color:#8de0ad; }

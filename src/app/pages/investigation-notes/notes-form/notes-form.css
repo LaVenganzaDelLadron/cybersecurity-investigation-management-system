@@ -1,3 +1,15 @@
 
 :host { display:block; }
-.page-shell { padding:24px; }
+.page-shell { padding:24px; max-width:760px; }
+header { margin-bottom:20px; }
+.eyebrow { color:#7cc6ff; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; }
+h1 { margin:8px 0 0; }
+form { display:grid; gap:16px; background:rgba(14,25,35,.9); border:1px solid rgba(120,150,180,.18); border-radius:16px; padding:20px; }
+label { display:grid; gap:7px; color:#c9d9ef; }
+input, textarea { background:#0a1622; border:1px solid #34506d; border-radius:8px; color:#eaf3ff; padding:10px; font:inherit; }
+small, .error-box { color:#ff9b9b; }
+.success-box { color:#8de0ad; }
+.actions { display:flex; gap:10px; }
+button { background:linear-gradient(135deg,#1a6ef1,#35b9ff); border:0; border-radius:9px; padding:10px 14px; color:#fff; font-weight:700; cursor:pointer; }
+button:disabled { opacity:.6; cursor:wait; }
+.secondary { background:#263c52; }
