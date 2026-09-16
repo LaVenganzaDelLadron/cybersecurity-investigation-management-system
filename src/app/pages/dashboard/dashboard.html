@@ -61,7 +61,7 @@
 </section>
 
 <div class="modal-backdrop" *ngIf="selectedResource" (click)="closeResource()">
-  <section class="resource-modal" role="dialog" aria-modal="true" [attr.aria-label]="selectedCard?.label" (click)="$event.stopPropagation()">
+  <section #resourceModal class="resource-modal" role="dialog" tabindex="-1" aria-modal="true" [attr.aria-label]="selectedCard?.label" (click)="$event.stopPropagation()">
     <header class="modal-header">
       <div><span class="eyebrow">Data preview</span><h2>{{ selectedCard?.label }}</h2></div>
       <button type="button" class="close-btn" aria-label="Close preview" (click)="closeResource()">×</button>

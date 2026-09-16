@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { Category } from '../../../core/models/category.model';
@@ -22,6 +22,8 @@ export class CategotyList {
   canManage = false;
   modalOpen = false;
   editingId: number | null = null;
+  @ViewChild('categoryModal') categoryModal?: ElementRef<HTMLElement>;
+  private modalTrigger: HTMLElement | null = null;
 
   constructor(
     private readonly categoryService: CategoryService,
@@ -47,24 +49,48 @@ export class CategotyList {
 
   edit(id: number): void {
     if (this.canManage) {
+      this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       this.editingId = id;
       this.modalOpen = true;
+      setTimeout(() => this.categoryModal?.nativeElement.focus());
     }
   }
   create(): void {
     if (this.canManage) {
+      this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       this.editingId = null;
       this.modalOpen = true;
+      setTimeout(() => this.categoryModal?.nativeElement.focus());
     }
   }
 
   closeModal(): void {
     this.modalOpen = false;
     this.editingId = null;
+    this.modalTrigger?.focus();
+    this.modalTrigger = null;
   }
 
   @HostListener('document:keydown.escape')
   handleEscape(): void { this.closeModal(); }
+
+  @HostListener('document:keydown', ['$event'])
+  trapModalFocus(event: KeyboardEvent): void {
+    if (!this.modalOpen || event.key !== 'Tab' || !this.categoryModal) return;
+    const focusable = Array.from(this.categoryModal.nativeElement.querySelectorAll<HTMLElement>(
+      'button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])',
+    ));
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 
   refreshAfterSave(): void {
     this.closeModal();

@@ -27,7 +27,7 @@
 </section>
 
 <div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()">
-  <section class="category-modal" role="dialog" aria-modal="true" aria-labelledby="category-dialog-title" (click)="$event.stopPropagation()">
+  <section #categoryModal class="category-modal" role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="category-dialog-title" (click)="$event.stopPropagation()">
     <app-categoty-form
       [categoryId]="editingId"
       [modal]="true"

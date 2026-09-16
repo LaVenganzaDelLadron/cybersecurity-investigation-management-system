@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -57,6 +57,8 @@ export class Dashboard {
   error = '';
   resourceErrors: Partial<Record<DashboardResource, boolean>> = {};
   selectedResource: DashboardResource | null = null;
+  @ViewChild('resourceModal') resourceModal?: ElementRef<HTMLElement>;
+  private modalTrigger: HTMLElement | null = null;
 
   constructor(
     private readonly authService: AuthService,
@@ -146,16 +148,38 @@ export class Dashboard {
   }
 
   openResource(resource: DashboardResource): void {
+    this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.selectedResource = resource;
+    setTimeout(() => this.resourceModal?.nativeElement.focus());
   }
 
   closeResource(): void {
     this.selectedResource = null;
+    this.modalTrigger?.focus();
+    this.modalTrigger = null;
   }
 
   @HostListener('document:keydown.escape')
   handleEscape(): void {
     this.closeResource();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  trapModalFocus(event: KeyboardEvent): void {
+    if (!this.selectedResource || event.key !== 'Tab' || !this.resourceModal) return;
+    const focusable = Array.from(this.resourceModal.nativeElement.querySelectorAll<HTMLElement>(
+      'button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])',
+    ));
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   resourceHasError(resource: DashboardResource): boolean {
