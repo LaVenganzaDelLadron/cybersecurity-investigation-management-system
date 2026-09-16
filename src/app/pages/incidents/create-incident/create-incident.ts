@@ -4,6 +4,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncidentPayload } from '../../../core/models/incident.model';
 import { IncidentService } from '../../../core/services/incident.service';
+import { Category } from '../../../core/models/category.model';
+import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
   selector: 'app-create-incident',
@@ -17,10 +19,12 @@ export class CreateIncident {
 
   loading = false;
   error = '';
+  categories: Category[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly incidentService: IncidentService,
+    private readonly categoryService: CategoryService,
     private readonly router: Router,
   ) {
     this.form = this.fb.group({
@@ -32,6 +36,10 @@ export class CreateIncident {
       location: ['', Validators.required],
       incident_date: ['', Validators.required],
       resolve_at: [null],
+    });
+    this.categoryService.list().subscribe({
+      next: (categories) => (this.categories = categories),
+      error: () => (this.error = 'Unable to load categories.'),
     });
   }
 

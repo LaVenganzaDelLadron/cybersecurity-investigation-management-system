@@ -32,6 +32,7 @@
         <td>
           <a [routerLink]="['/incidents', incident.id]">View</a>
           <a [routerLink]="['/incidents', incident.id, 'edit']">Edit</a>
+          <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
         </td>
       </tr>
     </tbody>

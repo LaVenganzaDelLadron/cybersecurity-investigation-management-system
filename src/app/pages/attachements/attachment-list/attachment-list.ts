@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Attachment } from '../../../core/models/attachment.model';
 import { AttachmentService } from '../../../core/services/attachment.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-attachment-list',
@@ -22,7 +23,12 @@ export class AttachmentList {
   readonly canManage: boolean;
   readonly form;
 
-  constructor(private readonly attachmentService: AttachmentService, private readonly fb: FormBuilder, authService: AuthService) {
+  constructor(
+    private readonly attachmentService: AttachmentService,
+    private readonly fb: FormBuilder,
+    authService: AuthService,
+    route: ActivatedRoute,
+  ) {
     this.canManage = authService.hasRole(['admin', 'analyst']);
     this.form = this.fb.group({
       incident_id: [null as number | null],
@@ -30,12 +36,13 @@ export class AttachmentList {
       filepath: [''],
       filetype: [''],
     });
-    this.load();
+    const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
+    this.load(incidentId);
   }
 
-  load(): void {
+  load(incidentId?: number): void {
     this.loading = true;
-    this.attachmentService.list().subscribe({
+    this.attachmentService.list(incidentId).subscribe({
       next: (attachments) => (this.attachments = attachments),
       error: () => { this.error = 'Unable to load attachments.'; this.loading = false; },
       complete: () => (this.loading = false),

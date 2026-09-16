@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { NotesForm } from './notes-form';
 
 describe('NotesForm', () => {
@@ -8,6 +9,17 @@ describe('NotesForm', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NotesForm],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: convertToParamMap({}),
+              queryParamMap: convertToParamMap({}),
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotesForm);

@@ -24,14 +24,17 @@ export class Dashboard {
     this.role = this.authService.getCurrentUser()?.role ?? 'user';
     this.incidentService.list().subscribe({
       next: (incidents) => (this.incidents = incidents),
-      error: () => (this.error = 'Unable to load dashboard data.'),
+      error: () => {
+        this.error = 'Unable to load dashboard data.';
+        this.loading = false;
+      },
       complete: () => (this.loading = false),
     });
   }
 
   get stats() {
     return [
-      { label: 'Open Incidents', value: this.countByStatus('open'), tone: 'accent' },
+      { label: 'Open Incidents', value: this.incidents.filter((incident) => !['resolved', 'closed'].includes(this.normalise(incident.status))).length, tone: 'accent' },
       { label: 'Investigating', value: this.countByStatus('investigating'), tone: 'warning' },
       { label: 'Resolved', value: this.countByStatus('resolved'), tone: 'success' },
       { label: 'Critical Alerts', value: this.incidents.filter((i) => this.normalise(i.severity) === 'critical').length, tone: 'danger' },

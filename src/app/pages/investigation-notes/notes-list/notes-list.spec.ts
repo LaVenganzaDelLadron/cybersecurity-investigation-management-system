@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { NotesList } from './notes-list';
 
 describe('NotesList', () => {
@@ -9,7 +10,10 @@ describe('NotesList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NotesList],
-      providers: [provideHttpClient()],
+      providers: [
+        provideHttpClient(),
+        { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: convertToParamMap({}) } } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotesList);

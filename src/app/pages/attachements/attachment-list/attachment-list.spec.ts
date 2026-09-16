@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { AttachmentList } from './attachment-list';
 
 describe('AttachmentList', () => {
@@ -9,7 +10,10 @@ describe('AttachmentList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AttachmentList],
-      providers: [provideHttpClient()],
+      providers: [
+        provideHttpClient(),
+        { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: convertToParamMap({}) } } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AttachmentList);

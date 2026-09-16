@@ -3,10 +3,10 @@
   <form [formGroup]="form" (ngSubmit)="submit()" class="incident-form">
     <label><span>Title</span><input formControlName="title" /></label>
     <label><span>Description</span><textarea formControlName="description"></textarea></label>
-    <label><span>Category ID</span><input formControlName="category_id" type="number" /></label>
+    <label><span>Category</span><select formControlName="category_id"><option [ngValue]="null">Select a category</option><option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option></select></label>
     <div class="row">
       <label><span>Severity</span><select formControlName="severity"><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
-      <label><span>Status</span><select formControlName="status"><option>new</option><option>investigating</option><option>resolved</option><option>closed</option></select></label>
+      <label><span>Status</span><select formControlName="status"><option value="new">New</option></select></label>
     </div>
     <label><span>Location</span><input formControlName="location" /></label>
     <label><span>Incident date</span><input formControlName="incident_date" type="datetime-local" /></label>

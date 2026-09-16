@@ -9,6 +9,12 @@
     </div>
     <span class="badge severity-{{ currentIncident.severity }}">{{ currentIncident.severity }}</span>
   </header>
+  <div class="toolbar">
+    <a [routerLink]="['/incidents', currentIncident.id, 'edit']">Edit incident</a>
+    <a [routerLink]="['/notes']" [queryParams]="{ incident_id: currentIncident.id }">Investigation notes</a>
+    <a [routerLink]="['/attachments']" [queryParams]="{ incident_id: currentIncident.id }">Attachments</a>
+    <button *ngIf="isAdmin" type="button" (click)="deleteIncident()">Delete incident</button>
+  </div>
 
   <div class="detail-grid">
     <article class="panel">

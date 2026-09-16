@@ -4,6 +4,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IncidentPayload } from '../../../core/models/incident.model';
 import { IncidentService } from '../../../core/services/incident.service';
+import { Category } from '../../../core/models/category.model';
+import { CategoryService } from '../../../core/services/category.service';
+import { UserSummary } from '../../../core/models/user.model';
+import { UserService } from '../../../core/services/user.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-edit-incident',
@@ -18,13 +23,20 @@ export class EditIncident {
   saving = false;
   error = '';
   private readonly incidentId: number;
+  categories: Category[] = [];
+  analysts: UserSummary[] = [];
+  readonly isAdmin: boolean;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly incidentService: IncidentService,
+    private readonly categoryService: CategoryService,
+    private readonly userService: UserService,
+    authService: AuthService,
   ) {
+    this.isAdmin = authService.hasRole('admin');
     this.incidentId = Number(this.route.snapshot.paramMap.get('id'));
     this.form = this.fb.group({
       title: ['', Validators.required],
@@ -35,6 +47,17 @@ export class EditIncident {
       location: ['', Validators.required],
       incident_date: ['', Validators.required],
       resolve_at: [null],
+      assigned_to: [null],
+    });
+    if (this.isAdmin) {
+      this.userService.list().subscribe({
+        next: (users) => (this.analysts = users.filter((user) => user.role === 'analyst' && user.status === 'active')),
+        error: () => (this.error = 'Unable to load analysts.'),
+      });
+    }
+    this.categoryService.list().subscribe({
+      next: (categories) => (this.categories = categories),
+      error: () => (this.error = 'Unable to load categories.'),
     });
     this.loadIncident();
   }
@@ -51,6 +74,7 @@ export class EditIncident {
           location: incident.location ?? '',
           incident_date: incident.incident_date ?? '',
           resolve_at: incident.resolve_at ?? null,
+          assigned_to: incident.assigned_to ?? null,
         } as never);
         this.loading = false;
       },
@@ -79,6 +103,7 @@ export class EditIncident {
       location: values.location ?? '',
       incident_date: values.incident_date ?? '',
       resolve_at: values.resolve_at ?? null,
+      ...(this.isAdmin ? { assigned_to: values.assigned_to ?? null } : {}),
     };
 
     this.incidentService.update(this.incidentId, payload).subscribe({
