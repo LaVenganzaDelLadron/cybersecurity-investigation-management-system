@@ -6,7 +6,7 @@
       <p class="subtitle">A clear view of your incident operations and connected records.</p>
     </div>
     <div class="header-actions">
-      <button type="button" class="secondary-btn" (click)="loadDashboard()" [disabled]="loading">Refresh</button>
+      <button type="button" class="secondary-btn" (click)="loadDashboard(true)" [disabled]="loading">Refresh</button>
       <span class="role-pill">{{ role | uppercase }}</span>
     </div>
   </header>

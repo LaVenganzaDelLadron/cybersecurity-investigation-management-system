@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { RequestCacheService } from './request-cache.service';
 import { environment } from '../../../environments/environment';
 import {
   AuthResponse,
@@ -21,7 +22,7 @@ export class AuthService {
 
   readonly currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, private readonly cache: RequestCacheService) {}
 
   login(payload: LoginRequest) {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/signin`, payload).pipe(
@@ -36,6 +37,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.cache.clear();
     this.storage?.removeItem(this.tokenKey);
     this.storage?.removeItem(this.userKey);
     this.currentUserSubject.next(null);

@@ -112,20 +112,20 @@ export class Dashboard {
     return this.cards.find((card) => card.key === this.selectedResource);
   }
 
-  loadDashboard(): void {
+  loadDashboard(refresh = false): void {
     this.loading = true;
     this.error = '';
     const admin = this.role === 'admin';
     const investigator = admin || this.role === 'analyst';
     forkJoin({
-      incidents: this.resource(this.incidentService.list(), 'incidents'),
-      categories: this.resource(this.categoryService.list(), 'categories'),
-      attachments: this.resource(this.attachmentService.list(), 'attachments'),
-      chats: this.resource(this.chatService.list(), 'chats'),
-      ...(investigator ? { notes: this.resource(this.noteService.list(), 'notes') } : {}),
+      incidents: this.resource(this.incidentService.list(refresh), 'incidents'),
+      categories: this.resource(this.categoryService.list(refresh), 'categories'),
+      attachments: this.resource(this.attachmentService.list(undefined, refresh), 'attachments'),
+      chats: this.resource(this.chatService.list(refresh), 'chats'),
+      ...(investigator ? { notes: this.resource(this.noteService.list(undefined, refresh), 'notes') } : {}),
       ...(admin ? {
-        users: this.resource(this.userService.list(), 'users'),
-        auditLogs: this.resource(this.auditLogService.list(), 'auditLogs'),
+        users: this.resource(this.userService.list(refresh), 'users'),
+        auditLogs: this.resource(this.auditLogService.list(refresh), 'auditLogs'),
       } : {}),
     }).subscribe({
       next: (data) => {
