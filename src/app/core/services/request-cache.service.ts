@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { finalize, shareReplay, tap } from 'rxjs/operators';
+import { finalize, shareReplay, tap, timeout } from 'rxjs/operators';
 
 interface CacheEntry {
   expiresAt: number;
@@ -9,6 +9,7 @@ interface CacheEntry {
 
 @Injectable({ providedIn: 'root' })
 export class RequestCacheService {
+  private readonly requestTimeoutMs = 10_000;
   private readonly entries = new Map<string, CacheEntry>();
   private readonly pending = new Map<string, Observable<unknown>>();
   private readonly ttlMs = 60_000;
@@ -25,6 +26,7 @@ export class RequestCacheService {
     if (pending) return pending as Observable<T>;
 
     const shared = request().pipe(
+      timeout({ first: this.requestTimeoutMs }),
       tap((value) => this.entries.set(key, { value, expiresAt: Date.now() + this.ttlMs })),
       finalize(() => this.pending.delete(key)),
       shareReplay({ bufferSize: 1, refCount: false }),

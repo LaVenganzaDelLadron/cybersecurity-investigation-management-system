@@ -1,4 +1,4 @@
-import { firstValueFrom, of, Subject } from 'rxjs';
+import { firstValueFrom, NEVER, of, Subject } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 import { RequestCacheService } from './request-cache.service';
 
@@ -54,5 +54,18 @@ describe('RequestCacheService', () => {
     cache.clear();
     await firstValueFrom(cache.get('users', request));
     expect(requests).toBe(3);
+  });
+
+  it('times out a request that never responds', async () => {
+    vi.useFakeTimers();
+    try {
+      const cache = new RequestCacheService();
+      const result = firstValueFrom(cache.get('slow', () => NEVER));
+      const rejection = expect(result).rejects.toMatchObject({ name: 'TimeoutError' });
+      vi.advanceTimersByTime(10_001);
+      await rejection;
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

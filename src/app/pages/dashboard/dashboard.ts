@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { Incident } from '../../core/models/incident.model';
 import { Category } from '../../core/models/category.model';
@@ -115,6 +115,7 @@ export class Dashboard {
   loadDashboard(refresh = false): void {
     this.loading = true;
     this.error = '';
+    this.resourceErrors = {};
     const admin = this.role === 'admin';
     const investigator = admin || this.role === 'analyst';
     forkJoin({
@@ -127,7 +128,9 @@ export class Dashboard {
         users: this.resource(this.userService.list(refresh), 'users'),
         auditLogs: this.resource(this.auditLogService.list(refresh), 'auditLogs'),
       } : {}),
-    }).subscribe({
+    }).pipe(
+      finalize(() => (this.loading = false)),
+    ).subscribe({
       next: (data) => {
         this.incidents = data.incidents;
         this.categories = data.categories;
@@ -142,8 +145,8 @@ export class Dashboard {
       },
       error: () => {
         this.error = 'Unable to load dashboard data. Please try again.';
-        this.loading = false;
       },
+      complete: () => undefined,
     });
   }
 
