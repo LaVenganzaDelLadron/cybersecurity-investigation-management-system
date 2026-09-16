@@ -7,11 +7,16 @@
   </header>
 
   <article class="profile-card">
-    <h2>{{ user.name || user.email }}</h2>
+    <div class="profile-heading">
+      <div class="avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+      <div><h2>{{ user.name || user.email }}</h2><span>{{ user.role | uppercase }}</span></div>
+    </div>
     <ul>
+      <li *ngIf="user.id"><strong>User ID:</strong> {{ user.id }}</li>
       <li><strong>Email:</strong> {{ user.email }}</li>
-      <li><strong>Role:</strong> {{ user.role }}</li>
-      <li><strong>Status:</strong> Active</li>
+      <li><strong>Role:</strong> {{ user.role | titlecase }}</li>
+      <li><strong>Status:</strong> {{ user.status | titlecase }}</li>
+      <li *ngIf="user.createdAt"><strong>Member since:</strong> {{ user.createdAt | date:'longDate' }}</li>
     </ul>
   </article>
 </section>

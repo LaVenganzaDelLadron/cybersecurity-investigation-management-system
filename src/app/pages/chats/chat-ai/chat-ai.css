@@ -12,3 +12,7 @@ h1 { margin:8px 0 0; }
 .chat-form { display:grid; grid-template-columns:1fr auto; gap:12px; margin-top:16px; }
 .chat-form input { background: rgba(255,255,255,0.04); border:1px solid rgba(152,171,214,0.32); border-radius:10px; padding:12px 14px; color:#eff6ff; }
 .chat-form button { background:linear-gradient(135deg, #1a6ef1, #35b9ff); border:none; border-radius:10px; color:white; padding:12px 16px; font-weight:700; }
+.message-actions { display:flex; gap:8px; margin-top:8px; }
+.message-actions button, .edit-form button { padding:5px 10px; }
+.edit-form { display:flex; gap:8px; margin-top:8px; }
+.edit-form input { flex:1; }

@@ -7,3 +7,5 @@ h1 { margin:8px 0 0; }
 .data-table { width:100%; border-collapse:collapse; background:rgba(14,25,35,0.9); border-radius:16px; overflow:hidden; }
 .data-table th, .data-table td { text-align:left; padding:12px 14px; border-bottom:1px solid rgba(120,150,180,0.18); }
 .data-table th { color:#9fb9dd; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; }
+:host { display:block; }
+.filter-input { width:100%; max-width:480px; margin:0 0 18px; padding:10px 12px; border-radius:8px; border:1px solid rgba(120,150,180,.35); background:rgba(14,25,35,.8); color:inherit; }

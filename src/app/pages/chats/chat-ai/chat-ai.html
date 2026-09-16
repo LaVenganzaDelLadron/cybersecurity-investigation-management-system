@@ -14,6 +14,16 @@
       <p>{{ message.userinput }}</p>
       <strong>AI</strong>
       <p>{{ message.response }}</p>
+      <div class="message-actions">
+        <button type="button" (click)="edit(message)" *ngIf="editingId !== message.id">Edit</button>
+        <button type="button" (click)="regenerate(message)" [disabled]="sending">Regenerate</button>
+        <button type="button" (click)="delete(message)" *ngIf="isAdmin">Delete</button>
+      </div>
+      <form *ngIf="editingId === message.id" (ngSubmit)="saveEdit(message)" class="edit-form">
+        <input [formControl]="form.controls.message" />
+        <button type="submit" [disabled]="sending">Save</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </form>
     </div>
   </div>
 

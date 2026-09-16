@@ -10,7 +10,14 @@ import { AuthService } from '../../auth.service';
   templateUrl: './profile.html',
 })
 export class Profile {
-  user: { email: string; role: string; name: string };
+  user: {
+    email: string;
+    role: string;
+    name: string;
+    status: string;
+    id?: number;
+    createdAt?: string;
+  };
 
   constructor(private readonly authService: AuthService) {
     const currentUser = this.authService.getCurrentUser();
@@ -18,8 +25,12 @@ export class Profile {
       ? {
           email: currentUser.email ?? 'user@cims.local',
           role: currentUser.role ?? 'user',
-          name: currentUser.name ?? currentUser.full_name ?? 'CIMS User',
+          name: currentUser.name ?? currentUser.full_name ??
+            ([currentUser.firstname, currentUser.lastname].filter(Boolean).join(' ') || 'CIMS User'),
+          status: currentUser.status ?? 'Active',
+          id: currentUser.id,
+          createdAt: currentUser.created_at,
         }
-      : { email: 'user@cims.local', role: 'user', name: 'CIMS User' };
+      : { email: 'user@cims.local', role: 'user', name: 'CIMS User', status: 'Active' };
   }
 }

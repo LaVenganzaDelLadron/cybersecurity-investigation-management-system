@@ -8,15 +8,18 @@
 
   <p *ngIf="loading">Loading audit logs...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
+  <input class="filter-input" [(ngModel)]="filter" placeholder="Filter by action, resource, actor, or details" *ngIf="!loading" />
 
-  <table class="data-table" *ngIf="!loading && audits.length">
-    <thead><tr><th>Action</th><th>Resource</th><th>Details</th><th>Time</th></tr></thead>
+  <p *ngIf="!loading && !filteredAudits.length">No audit events match your search.</p>
+  <table class="data-table" *ngIf="!loading && filteredAudits.length">
+    <thead><tr><th>Action</th><th>Actor</th><th>Resource</th><th>Details</th><th>Time</th></tr></thead>
     <tbody>
-      <tr *ngFor="let log of audits">
+      <tr *ngFor="let log of filteredAudits">
         <td>{{ log.action }}</td>
-        <td>{{ log.resource_type }} #{{ log.resource_id }}</td>
-        <td>{{ log.details }}</td>
-        <td>{{ log.created_at }}</td>
+        <td>{{ log.actor_id ?? 'System' }}</td>
+        <td>{{ log.resource_type ?? '—' }}<span *ngIf="log.resource_id"> #{{ log.resource_id }}</span></td>
+        <td>{{ formatDetails(log.details) }}</td>
+        <td>{{ log.created_at | date:'medium' }}</td>
       </tr>
     </tbody>
   </table>
