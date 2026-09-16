@@ -4,22 +4,24 @@
       <span class="eyebrow">Reference</span>
       <h1>Categories</h1>
     </div>
-    <button class="primary-btn">New category</button>
+    <button class="primary-btn" *ngIf="canManage" (click)="create()">New category</button>
   </header>
 
   <p *ngIf="loading">Loading categories...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p class="error-box" *ngIf="actionError">{{ actionError }}</p>
 
   <table class="data-table" *ngIf="!loading && categories.length">
     <thead>
-      <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
+      <tr><th>Name</th><th>Description</th><th *ngIf="canManage">Actions</th></tr>
     </thead>
     <tbody>
       <tr *ngFor="let category of categories">
         <td>{{ category.name }}</td>
         <td>{{ category.description }}</td>
-        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+        <td *ngIf="canManage"><button type="button" (click)="edit(category.id)">Edit</button> <button type="button" (click)="remove(category)">Delete</button></td>
       </tr>
     </tbody>
   </table>
+  <p *ngIf="!loading && !categories.length">No categories found.</p>
 </section>

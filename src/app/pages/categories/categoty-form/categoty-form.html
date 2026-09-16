@@ -1,1 +1,13 @@
-<section class="page-shell"><h1>Category form</h1></section>
+<section class="page-shell">
+  <h1>{{ id === null ? 'New category' : 'Edit category' }}</h1>
+  <p *ngIf="loadingRecord">Loading category...</p>
+  <form *ngIf="!loadingRecord" [formGroup]="form" (ngSubmit)="submit()">
+    <label><span>Name</span><input formControlName="name" maxlength="100" /></label>
+    <small *ngIf="form.controls.name.touched && form.controls.name.invalid">A name is required.</small>
+    <label><span>Description</span><textarea formControlName="description" maxlength="500"></textarea></label>
+    <p class="error-box" *ngIf="error">{{ error }}</p>
+    <p class="success-box" *ngIf="success">{{ success }}</p>
+    <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save category' }}</button>
+    <button type="button" (click)="router.navigateByUrl('/categories')" [disabled]="loading">Cancel</button>
+  </form>
+</section>

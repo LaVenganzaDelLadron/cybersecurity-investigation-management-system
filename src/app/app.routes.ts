@@ -11,7 +11,10 @@ import { CreateIncident } from './pages/incidents/create-incident/create-inciden
 import { EditIncident } from './pages/incidents/edit-incident/edit-incident';
 import { CategotyList } from './pages/categories/categoty-list/categoty-list';
 import { UserList } from './pages/user/user-list/user-list';
+import { UserForm } from './pages/user/user-form/user-form';
+import { CategotyForm } from './pages/categories/categoty-form/categoty-form';
 import { NotesList } from './pages/investigation-notes/notes-list/notes-list';
+import { NotesForm } from './pages/investigation-notes/notes-form/notes-form';
 import { AttachmentList } from './pages/attachements/attachment-list/attachment-list';
 import { ChatAi } from './pages/chats/chat-ai/chat-ai';
 import { AuditLogs } from './pages/audit-logs/audit-logs';
@@ -39,8 +42,14 @@ export const routes: Routes = [
       { path: 'incidents/:id', component: IncidentDetails },
       { path: 'incidents/:id/edit', component: EditIncident },
       { path: 'categories', component: CategotyList, canActivate: [AdminGuard] },
+      { path: 'categories/new', component: CategotyForm, canActivate: [AdminGuard] },
+      { path: 'categories/:id/edit', component: CategotyForm, canActivate: [AdminGuard] },
       { path: 'users', component: UserList, canActivate: [AdminGuard] },
+      { path: 'users/new', component: UserForm, canActivate: [AdminGuard] },
+      { path: 'users/:id/edit', component: UserForm, canActivate: [AdminGuard] },
       { path: 'notes', component: NotesList, canActivate: [AnalystGuard] },
+      { path: 'notes/new', component: NotesForm, canActivate: [AnalystGuard] },
+      { path: 'notes/:id/edit', component: NotesForm, canActivate: [AnalystGuard] },
       { path: 'attachments', component: AttachmentList },
       { path: 'chat', component: ChatAi },
       { path: 'audit-logs', component: AuditLogs, canActivate: [AdminGuard] },

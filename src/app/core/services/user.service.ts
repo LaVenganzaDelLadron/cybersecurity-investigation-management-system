@@ -26,4 +26,7 @@ export class UserService {
     return this.http.put<UserProfile>(`${this.baseUrl}/${id}`, payload);
   }
 
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

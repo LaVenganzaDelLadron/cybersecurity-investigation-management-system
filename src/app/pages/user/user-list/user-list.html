@@ -4,21 +4,24 @@
       <span class="eyebrow">Administration</span>
       <h1>Users</h1>
     </div>
-    <button class="primary-btn">New user</button>
+    <button class="primary-btn" *ngIf="canManage" (click)="create()">New user</button>
   </header>
 
   <p *ngIf="loading">Loading users...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p class="error-box" *ngIf="actionError">{{ actionError }}</p>
 
   <table class="data-table" *ngIf="!loading && users.length">
-    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th *ngIf="canManage">Actions</th></tr></thead>
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.firstname }} {{ user.lastname }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.role }}</td>
         <td><span class="badge status-{{ user.status }}">{{ user.status }}</span></td>
+        <td *ngIf="canManage"><button type="button" (click)="edit(user.id)">Edit</button> <button type="button" (click)="remove(user)">Delete</button></td>
       </tr>
     </tbody>
   </table>
+  <p *ngIf="!loading && !users.length">No users found.</p>
 </section>

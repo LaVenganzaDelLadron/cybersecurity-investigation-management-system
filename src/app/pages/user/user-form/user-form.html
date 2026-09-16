@@ -1,1 +1,18 @@
-<section class="page-shell"><h1>User form</h1></section>
+<section class="page-shell">
+  <h1>{{ id === null ? 'New user' : 'Edit user' }}</h1>
+  <p *ngIf="loadingRecord">Loading user...</p>
+  <form *ngIf="!loadingRecord" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <label><span>First name</span><input formControlName="firstname" /></label>
+      <label><span>Last name</span><input formControlName="lastname" /></label>
+    </div>
+    <label><span>Email</span><input formControlName="email" type="email" /></label>
+    <label><span>Role</span><select formControlName="role"><option *ngFor="let role of roles" [value]="role">{{ role | titlecase }}</option></select></label>
+    <label><span>Status</span><select formControlName="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+    <label><span>{{ id === null ? 'Password' : 'Password (leave blank to keep current)' }}</span><input formControlName="password" type="password" /></label>
+    <p class="error-box" *ngIf="error">{{ error }}</p>
+    <p class="success-box" *ngIf="success">{{ success }}</p>
+    <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save user' }}</button>
+    <button type="button" (click)="router.navigateByUrl('/users')" [disabled]="loading">Cancel</button>
+  </form>
+</section>
