@@ -1,5 +1,11 @@
-<section class="page-shell">
-  <h1>{{ id === null ? 'New category' : 'Edit category' }}</h1>
+<section class="category-form">
+  <header class="form-header">
+    <div>
+      <span class="eyebrow">Category management</span>
+      <h2 id="category-dialog-title">{{ id === null ? 'New category' : 'Edit category' }}</h2>
+    </div>
+    <button *ngIf="modal" type="button" class="close-btn" aria-label="Close category dialog" (click)="cancel()">×</button>
+  </header>
   <p *ngIf="loadingRecord">Loading category...</p>
   <form *ngIf="!loadingRecord" [formGroup]="form" (ngSubmit)="submit()">
     <label><span>Name</span><input formControlName="name" maxlength="100" /></label>
@@ -8,6 +14,6 @@
     <p class="error-box" *ngIf="error">{{ error }}</p>
     <p class="success-box" *ngIf="success">{{ success }}</p>
     <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save category' }}</button>
-    <button type="button" (click)="router.navigateByUrl('/categories')" [disabled]="loading">Cancel</button>
+    <button type="button" (click)="cancel()" [disabled]="loading">Cancel</button>
   </form>
 </section>

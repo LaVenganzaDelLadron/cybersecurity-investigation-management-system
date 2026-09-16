@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { Category } from '../../../core/models/category.model';
 import { CategoryService } from '../../../core/services/category.service';
+import { CategotyForm } from '../categoty-form/categoty-form';
 
 @Component({
   selector: 'app-categoty-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CategotyForm],
   styleUrl: './categoty-list.css',
   templateUrl: './categoty-list.html',
 })
@@ -19,6 +20,8 @@ export class CategotyList {
   actionError = '';
   deleting = false;
   canManage = false;
+  modalOpen = false;
+  editingId: number | null = null;
 
   constructor(
     private readonly categoryService: CategoryService,
@@ -42,8 +45,31 @@ export class CategotyList {
     });
   }
 
-  edit(id: number): void { this.router.navigate(['/categories', id, 'edit']); }
-  create(): void { this.router.navigateByUrl('/categories/new'); }
+  edit(id: number): void {
+    if (this.canManage) {
+      this.editingId = id;
+      this.modalOpen = true;
+    }
+  }
+  create(): void {
+    if (this.canManage) {
+      this.editingId = null;
+      this.modalOpen = true;
+    }
+  }
+
+  closeModal(): void {
+    this.modalOpen = false;
+    this.editingId = null;
+  }
+
+  @HostListener('document:keydown.escape')
+  handleEscape(): void { this.closeModal(); }
+
+  refreshAfterSave(): void {
+    this.closeModal();
+    this.load();
+  }
 
   remove(category: Category): void {
     if (!this.canManage || this.deleting || !window.confirm(`Delete "${category.name}"?`)) return;
