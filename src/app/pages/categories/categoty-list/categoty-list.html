@@ -1,0 +1,25 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Reference</span>
+      <h1>Categories</h1>
+    </div>
+    <button class="primary-btn">New category</button>
+  </header>
+
+  <p *ngIf="loading">Loading categories...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+
+  <table class="data-table" *ngIf="!loading && categories.length">
+    <thead>
+      <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.name }}</td>
+        <td>{{ category.description }}</td>
+        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

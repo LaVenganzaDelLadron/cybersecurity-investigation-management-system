@@ -1,0 +1,23 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Evidence</span>
+      <h1>Attachments</h1>
+    </div>
+    <button class="primary-btn">Upload</button>
+  </header>
+
+  <p *ngIf="loading">Loading attachments...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+
+  <table class="data-table" *ngIf="!loading && attachments.length">
+    <thead><tr><th>Filename</th><th>Type</th><th>Actions</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let attachment of attachments">
+        <td>{{ attachment.filename }}</td>
+        <td>{{ attachment.filetype }}</td>
+        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

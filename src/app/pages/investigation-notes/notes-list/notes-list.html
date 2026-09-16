@@ -1,0 +1,19 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Case notes</span>
+      <h1>Investigation notes</h1>
+    </div>
+    <button class="primary-btn">Add note</button>
+  </header>
+
+  <p *ngIf="loading">Loading notes...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+
+  <div class="notes-list">
+    <article class="note-card" *ngFor="let note of notes">
+      <p>{{ note.note }}</p>
+      <footer>{{ note.recommendation }}</footer>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+
+:host { display:block; }
+.page-shell { padding:24px; }
+.page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
+h1 { margin:8px 0 0; }
+.primary-btn { background:linear-gradient(135deg, #1a6ef1, #35b9ff); border:none; border-radius:10px; padding:10px 14px; color:white; font-weight:700; cursor:pointer; }
+.notes-list { display:grid; gap:16px; }
+.note-card { background: rgba(14,25,35,0.9); border:1px solid rgba(120,150,180,0.18); border-radius:16px; padding:18px; }
+.note-card p { margin:0 0 10px; color:#dfeafc; }
+.note-card footer { color:#7cc6ff; }

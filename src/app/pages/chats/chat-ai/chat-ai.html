@@ -1,0 +1,24 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">AI assistant</span>
+      <h1>Investigation copilot</h1>
+    </div>
+  </header>
+
+  <p *ngIf="loading">Loading conversation...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+  <div class="chat-window">
+    <div class="message" *ngFor="let message of messages">
+      <strong>You</strong>
+      <p>{{ message.userinput }}</p>
+      <strong>AI</strong>
+      <p>{{ message.response }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="send()" class="chat-form">
+    <input formControlName="message" placeholder="Ask the AI assistant..." />
+    <button type="submit" [disabled]="sending">{{ sending ? 'Sending...' : 'Send' }}</button>
+  </form>
+</section>

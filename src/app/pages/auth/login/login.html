@@ -1,0 +1,32 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span class="eyebrow">CIMS</span>
+      <h1>Sign in</h1>
+      <p>Secure access to the incident command center.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="analyst@cims.local" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input formControlName="password" type="password" placeholder="••••••••" />
+      </label>
+
+      <div class="error-box" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Signing in...' : 'Login' }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      Need an account?
+      <a routerLink="/signup">Create one</a>
+    </p>
+  </div>
+</section>

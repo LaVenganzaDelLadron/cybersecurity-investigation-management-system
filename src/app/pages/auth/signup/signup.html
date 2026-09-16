@@ -1,0 +1,42 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span class="eyebrow">CIMS</span>
+      <h1>Create account</h1>
+      <p>Register to manage incidents and investigations.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <label>
+        <span>First name</span>
+        <input formControlName="firstname" type="text" placeholder="Alex" />
+      </label>
+
+      <label>
+        <span>Last name</span>
+        <input formControlName="lastname" type="text" placeholder="Morgan" />
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="you@example.com" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input formControlName="password" type="password" placeholder="Minimum 6 characters" />
+      </label>
+
+      <div class="error-box" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Creating account...' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      Already registered?
+      <a routerLink="/login">Sign in</a>
+    </p>
+  </div>
+</section>

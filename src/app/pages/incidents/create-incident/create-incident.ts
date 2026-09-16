@@ -1,0 +1,66 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IncidentPayload } from '../../../core/models/incident.model';
+import { IncidentService } from '../../../core/services/incident.service';
+
+@Component({
+  selector: 'app-create-incident',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  styleUrl: './create-incident.css',
+  templateUrl: './create-incident.html',
+})
+export class CreateIncident {
+  form;
+
+  loading = false;
+  error = '';
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly incidentService: IncidentService,
+    private readonly router: Router,
+  ) {
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      category_id: [null],
+      severity: ['medium', Validators.required],
+      status: ['new', Validators.required],
+      location: ['', Validators.required],
+      incident_date: ['', Validators.required],
+      resolve_at: [null],
+    });
+  }
+
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading = true;
+    this.error = '';
+    const values = this.form.getRawValue();
+    const payload: IncidentPayload = {
+      ...values,
+      category_id: values.category_id ?? undefined,
+      title: values.title ?? '',
+      description: values.description ?? '',
+      severity: values.severity ?? 'medium',
+      status: values.status ?? 'new',
+      location: values.location ?? '',
+      incident_date: values.incident_date ?? '',
+    };
+
+    this.incidentService.create(payload).subscribe({
+      next: () => this.router.navigateByUrl('/incidents'),
+      error: () => {
+        this.error = 'Unable to create the incident.';
+        this.loading = false;
+      },
+    });
+  }
+}

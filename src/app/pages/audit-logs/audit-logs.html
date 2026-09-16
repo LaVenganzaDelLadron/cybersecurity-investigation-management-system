@@ -1,0 +1,23 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Compliance</span>
+      <h1>Audit logs</h1>
+    </div>
+  </header>
+
+  <p *ngIf="loading">Loading audit logs...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+
+  <table class="data-table" *ngIf="!loading && audits.length">
+    <thead><tr><th>Action</th><th>Resource</th><th>Details</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let log of audits">
+        <td>{{ log.action }}</td>
+        <td>{{ log.resource_type }} #{{ log.resource_id }}</td>
+        <td>{{ log.details }}</td>
+        <td>{{ log.created_at }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>

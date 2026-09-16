@@ -1,0 +1,18 @@
+
+:host { display:block; }
+.page-shell { padding:24px; }
+.page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
+h1 { margin:8px 0 0; }
+.detail-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); }
+.panel { background: rgba(14,25,35,0.9); border-radius:16px; padding:20px; border:1px solid rgba(120,150,180,0.18); }
+ul { list-style:none; padding:0; display:grid; gap:8px; }
+.badge { padding:4px 10px; border-radius:999px; text-transform:capitalize; font-size:0.74rem; }
+.status-new { background:rgba(72,157,255,0.18); color:#90d0ff; }
+.status-investigating { background:rgba(248,192,73,0.18); color:#ffd67b; }
+.status-resolved { background:rgba(74,198,134,0.18); color:#9aeeb7; }
+.status-closed { background:rgba(146,161,180,0.18); color:#dfeafc; }
+.severity-low { background:rgba(74,198,134,0.12); color:#a8f0c2; }
+.severity-medium { background:rgba(248,192,73,0.12); color:#ffd67b; }
+.severity-high { background:rgba(255,144,69,0.12); color:#ffba73; }
+.severity-critical { background:rgba(255,88,88,0.12); color:#ff9a9a; }

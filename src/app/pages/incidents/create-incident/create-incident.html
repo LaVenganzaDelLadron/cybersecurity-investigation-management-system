@@ -1,0 +1,16 @@
+<section class="form-shell">
+  <h1>Create incident</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="incident-form">
+    <label><span>Title</span><input formControlName="title" /></label>
+    <label><span>Description</span><textarea formControlName="description"></textarea></label>
+    <label><span>Category ID</span><input formControlName="category_id" type="number" /></label>
+    <div class="row">
+      <label><span>Severity</span><select formControlName="severity"><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
+      <label><span>Status</span><select formControlName="status"><option>new</option><option>investigating</option><option>resolved</option><option>closed</option></select></label>
+    </div>
+    <label><span>Location</span><input formControlName="location" /></label>
+    <label><span>Incident date</span><input formControlName="incident_date" type="datetime-local" /></label>
+    <div class="error-box" *ngIf="error">{{ error }}</div>
+    <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save incident' }}</button>
+  </form>
+</section>

@@ -1,0 +1,39 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Operations</span>
+      <h1>Incidents</h1>
+    </div>
+    <button class="primary-btn" routerLink="/incidents/new">New incident</button>
+  </header>
+
+  <div class="toolbar">
+    <button type="button" (click)="loadIncidents()">Refresh</button>
+  </div>
+
+  <p *ngIf="loading">Loading incidents...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+  <p *ngIf="!loading && !error && !incidents.length">No incidents found.</p>
+
+  <table class="data-table" *ngIf="!loading && incidents.length">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Severity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let incident of incidents">
+        <td>{{ incident.title }}</td>
+        <td><span class="badge status-{{ incident.status }}">{{ incident.status }}</span></td>
+        <td><span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></td>
+        <td>
+          <a [routerLink]="['/incidents', incident.id]">View</a>
+          <a [routerLink]="['/incidents', incident.id, 'edit']">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>

@@ -1,0 +1,11 @@
+
+:host { display:block; }
+.page-shell { padding:24px; }
+.page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
+h1 { margin:8px 0 0; }
+.primary-btn { background:linear-gradient(135deg, #1a6ef1, #35b9ff); border:none; border-radius:10px; padding:10px 14px; color:white; font-weight:700; cursor:pointer; }
+.data-table { width:100%; border-collapse:collapse; background:rgba(14,25,35,0.9); border-radius:16px; overflow:hidden; }
+.data-table th, .data-table td { text-align:left; padding:12px 14px; border-bottom:1px solid rgba(120,150,180,0.18); }
+.data-table th { color:#9fb9dd; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; }
+a { color:#7cc6ff; text-decoration:none; margin-right:10px; }

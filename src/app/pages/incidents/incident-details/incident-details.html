@@ -1,0 +1,25 @@
+<section class="page-shell">
+  <p *ngIf="loading">Loading incident...</p>
+  <p class="error-box" *ngIf="error">{{ error }}</p>
+  <ng-container *ngIf="incident as currentIncident">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">Incident</span>
+      <h1>{{ currentIncident.title }}</h1>
+    </div>
+    <span class="badge severity-{{ currentIncident.severity }}">{{ currentIncident.severity }}</span>
+  </header>
+
+  <div class="detail-grid">
+    <article class="panel">
+      <h2>Summary</h2>
+      <p>{{ currentIncident.description }}</p>
+      <ul>
+        <li><strong>Status:</strong> <span class="badge status-{{ currentIncident.status }}">{{ currentIncident.status }}</span></li>
+        <li><strong>Case ID:</strong> INC-{{ currentIncident.id }}</li>
+        <li><strong>Owner:</strong> Security Operations</li>
+      </ul>
+    </article>
+  </div>
+  </ng-container>
+</section>
