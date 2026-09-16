@@ -1,3 +1,4 @@
 
 :host { display:block; }
+.form-header { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }.eyebrow { color:#7cc6ff; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; }.form-header h2 { margin:7px 0 0; }.close-btn { border:0; background:transparent; color:#bcd3f7; font-size:1.8rem; cursor:pointer; }
 .page-shell { padding:24px; }

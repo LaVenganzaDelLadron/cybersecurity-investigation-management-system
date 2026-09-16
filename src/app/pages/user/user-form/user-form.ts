@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
@@ -12,9 +12,13 @@ import { UserRole } from '../../../core/models/user.model';
   styleUrl: './user-form.css',
   templateUrl: './user-form.html',
 })
-export class UserForm {
+export class UserForm implements OnInit {
+  @Input() modal = false;
+  @Input() userId: number | null = null;
+  @Output() saved = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   readonly form;
-  readonly id: number | null;
+  id: number | null;
   loading = false;
   loadingRecord = false;
   error = '';
@@ -35,8 +39,15 @@ export class UserForm {
       email: ['', [Validators.required, Validators.email]],
       role: ['user' as UserRole, Validators.required],
       status: ['active', Validators.required],
-      password: ['', this.id === null ? Validators.required : []],
+      password: [''],
     });
+  }
+
+  ngOnInit(): void {
+    if (this.modal) this.id = this.userId;
+    const passwordControl = this.form.controls.password;
+    passwordControl.setValidators(this.id === null ? Validators.required : []);
+    passwordControl.updateValueAndValidity();
     if (this.id !== null) {
       this.loadingRecord = true;
       this.userService.get(this.id).subscribe({
@@ -71,9 +82,15 @@ export class UserForm {
       next: () => {
         this.success = this.id === null ? 'User created.' : 'User updated.';
         this.loading = false;
-        setTimeout(() => this.router.navigateByUrl('/users'), 500);
+        if (this.modal) this.saved.emit();
+        else setTimeout(() => this.router.navigateByUrl('/users'), 500);
       },
       error: () => { this.error = 'Unable to save the user.'; this.loading = false; },
     });
+  }
+
+  cancel(): void {
+    if (this.modal) this.cancelled.emit();
+    else void this.router.navigateByUrl('/users');
   }
 }

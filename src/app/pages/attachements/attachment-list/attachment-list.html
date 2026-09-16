@@ -10,15 +10,6 @@
   <p *ngIf="loading">Loading attachments...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="success-box" *ngIf="success">{{ success }}</p>
-  <form *ngIf="canManage && formOpen" [formGroup]="form" (ngSubmit)="save()" class="attachment-form">
-    <h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2>
-    <label>Incident ID <input type="number" formControlName="incident_id" min="1" /></label>
-    <label>Filename <input formControlName="filename" /></label>
-    <label>File path or URL <input formControlName="filepath" /></label>
-    <label>File type <input formControlName="filetype" placeholder="application/pdf" /></label>
-    <div><button type="submit">Save</button><button type="button" class="secondary" (click)="cancelEdit()">Cancel</button></div>
-  </form>
-
   <p *ngIf="!loading && !attachments.length">No attachments found.</p>
   <table class="data-table" *ngIf="!loading && attachments.length">
     <thead><tr><th>Filename</th><th>Type</th><th>Incident</th><th>Path</th><th *ngIf="canManage">Actions</th></tr></thead>
@@ -33,3 +24,13 @@
     </tbody>
   </table>
 </section>
+<div class="modal-backdrop" *ngIf="canManage && formOpen" (click)="cancelEdit()"><section #attachmentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Attachment form" (click)="$event.stopPropagation()">
+  <header class="form-header"><h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2><button type="button" class="close-btn" aria-label="Close" (click)="cancelEdit()">×</button></header>
+  <form [formGroup]="form" (ngSubmit)="save()" class="attachment-form">
+    <label>Incident ID <input type="number" formControlName="incident_id" min="1" /></label>
+    <label>Filename <input formControlName="filename" /></label>
+    <label>File path or URL <input formControlName="filepath" /></label>
+    <label>File type <input formControlName="filetype" placeholder="application/pdf" /></label>
+    <div><button type="submit">Save</button><button type="button" class="secondary" (click)="cancelEdit()">Cancel</button></div>
+  </form>
+</section></div>

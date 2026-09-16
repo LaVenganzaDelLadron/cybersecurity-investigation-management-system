@@ -1,5 +1,5 @@
 <section class="page-shell">
-  <header><span class="eyebrow">Case notes</span><h1>{{ noteId ? 'Edit note' : 'Add investigation note' }}</h1></header>
+  <header class="form-header"><div><span class="eyebrow">Case notes</span><h2>{{ noteId ? 'Edit note' : 'Add investigation note' }}</h2></div><button *ngIf="modal" type="button" class="close-btn" aria-label="Close" (click)="cancel()">×</button></header>
   <p *ngIf="loading">Loading note...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="success-box" *ngIf="success">{{ success }}</p>

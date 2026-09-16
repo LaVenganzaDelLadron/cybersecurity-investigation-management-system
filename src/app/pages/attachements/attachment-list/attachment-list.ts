@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Attachment } from '../../../core/models/attachment.model';
 import { AttachmentService } from '../../../core/services/attachment.service';
@@ -22,6 +22,8 @@ export class AttachmentList {
   formOpen = false;
   readonly canManage: boolean;
   readonly form;
+  @ViewChild('attachmentModal') attachmentModal?: ElementRef<HTMLElement>;
+  private modalTrigger: HTMLElement | null = null;
 
   constructor(
     private readonly attachmentService: AttachmentService,
@@ -50,13 +52,16 @@ export class AttachmentList {
   }
 
   startCreate(): void {
+    this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.editing = null;
     this.formOpen = true;
     this.form.reset();
     this.error = '';
+    setTimeout(() => this.attachmentModal?.nativeElement.focus());
   }
 
   startEdit(attachment: Attachment): void {
+    this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.editing = attachment;
     this.formOpen = true;
     this.form.patchValue({
@@ -66,9 +71,23 @@ export class AttachmentList {
       filetype: attachment.filetype ?? '',
     });
     this.error = '';
+    setTimeout(() => this.attachmentModal?.nativeElement.focus());
   }
 
-  cancelEdit(): void { this.editing = null; this.formOpen = false; this.form.reset(); }
+  cancelEdit(): void { this.editing = null; this.formOpen = false; this.form.reset(); this.modalTrigger?.focus(); this.modalTrigger = null; }
+
+  @HostListener('document:keydown.escape')
+  handleEscape(): void { if (this.formOpen) this.cancelEdit(); }
+
+  @HostListener('document:keydown', ['$event'])
+  trapFocus(event: KeyboardEvent): void {
+    if (!this.formOpen || event.key !== 'Tab' || !this.attachmentModal) return;
+    const elements = Array.from(this.attachmentModal.nativeElement.querySelectorAll<HTMLElement>('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'));
+    if (!elements.length) return;
+    const first = elements[0], last = elements[elements.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
 
   save(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }

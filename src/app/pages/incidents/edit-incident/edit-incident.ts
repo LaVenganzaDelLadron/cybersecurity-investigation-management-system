@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IncidentPayload } from '../../../core/models/incident.model';
@@ -17,12 +17,16 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './edit-incident.css',
   templateUrl: './edit-incident.html',
 })
-export class EditIncident {
+export class EditIncident implements OnInit {
+  @Input() modal = false;
+  @Input() incidentIdInput: number | null = null;
+  @Output() saved = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   form;
   loading = true;
   saving = false;
   error = '';
-  private readonly incidentId: number;
+  private incidentId = 0;
   categories: Category[] = [];
   analysts: UserSummary[] = [];
   readonly isAdmin: boolean;
@@ -37,7 +41,6 @@ export class EditIncident {
     authService: AuthService,
   ) {
     this.isAdmin = authService.hasRole('admin');
-    this.incidentId = Number(this.route.snapshot.paramMap.get('id'));
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -59,6 +62,10 @@ export class EditIncident {
       next: (categories) => (this.categories = categories),
       error: () => (this.error = 'Unable to load categories.'),
     });
+  }
+
+  ngOnInit(): void {
+    this.incidentId = this.incidentIdInput ?? Number(this.route.snapshot.paramMap.get('id'));
     this.loadIncident();
   }
 
@@ -107,11 +114,16 @@ export class EditIncident {
     };
 
     this.incidentService.update(this.incidentId, payload).subscribe({
-      next: () => this.router.navigate(['/incidents', this.incidentId]),
+      next: () => this.modal ? this.saved.emit() : this.router.navigate(['/incidents', this.incidentId]),
       error: () => {
         this.error = 'Unable to update the incident.';
         this.saving = false;
       },
     });
+  }
+
+  cancel(): void {
+    if (this.modal) this.cancelled.emit();
+    else void this.router.navigate(['/incidents', this.incidentId]);
   }
 }

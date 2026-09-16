@@ -4,7 +4,7 @@
       <span class="eyebrow">Operations</span>
       <h1>Incidents</h1>
     </div>
-    <button class="primary-btn" routerLink="/incidents/new">New incident</button>
+    <button class="primary-btn" type="button" (click)="openCreate()">New incident</button>
   </header>
 
   <div class="toolbar">
@@ -31,10 +31,17 @@
         <td><span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></td>
         <td>
           <a [routerLink]="['/incidents', incident.id]">View</a>
-          <a [routerLink]="['/incidents', incident.id, 'edit']">Edit</a>
+          <a href="/incidents/{{ incident.id }}/edit" (click)="openEdit(incident.id, $event)">Edit</a>
           <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
 </section>
+
+<div class="modal-backdrop" *ngIf="modal" (click)="closeModal()">
+  <section #incidentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Incident form" (click)="$event.stopPropagation()">
+    <app-create-incident *ngIf="modal === 'create'" [modal]="true" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-create-incident>
+    <app-edit-incident *ngIf="modal === 'edit'" [modal]="true" [incidentIdInput]="editingId" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-edit-incident>
+  </section>
+</div>

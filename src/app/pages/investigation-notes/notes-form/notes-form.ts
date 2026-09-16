@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvestigationNotePayload } from '../../../core/models/investigation-note.model';
@@ -12,9 +12,13 @@ import { InvestigationNoteService } from '../../../core/services/investigation-n
   styleUrl: './notes-form.css',
   templateUrl: './notes-form.html',
 })
-export class NotesForm {
+export class NotesForm implements OnInit {
+  @Input() modal = false;
+  @Input() noteIdInput: number | null = null;
+  @Output() saved = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   readonly form;
-  readonly noteId: number | null;
+  noteId: number | null;
   loading = false;
   saving = false;
   error = '';
@@ -32,6 +36,10 @@ export class NotesForm {
       note: ['', [Validators.required, Validators.maxLength(5000)]],
       recommendation: ['', Validators.maxLength(5000)],
     });
+  }
+
+  ngOnInit(): void {
+    if (this.modal) this.noteId = this.noteIdInput;
     if (this.noteId) {
       this.loading = true;
       this.noteService.get(this.noteId).subscribe({
@@ -57,11 +65,12 @@ export class NotesForm {
       next: () => {
         this.success = this.noteId ? 'Note updated successfully.' : 'Note created successfully.';
         this.saving = false;
-        if (!this.noteId) this.form.reset({ incident_id: payload.incident_id, note: '', recommendation: '' });
+        if (this.modal) this.saved.emit();
+        else if (!this.noteId) this.form.reset({ incident_id: payload.incident_id, note: '', recommendation: '' });
       },
       error: () => { this.error = 'Unable to save the note.'; this.saving = false; },
     });
   }
 
-  cancel(): void { this.router.navigate(['/notes']); }
+  cancel(): void { if (this.modal) this.cancelled.emit(); else void this.router.navigate(['/notes']); }
 }

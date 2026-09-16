@@ -4,7 +4,7 @@
       <span class="eyebrow">Case notes</span>
       <h1>Investigation notes</h1>
     </div>
-    <button class="primary-btn" *ngIf="canManage" routerLink="/notes/new">Add note</button>
+    <button class="primary-btn" *ngIf="canManage" type="button" (click)="openModal(null)">Add note</button>
   </header>
 
   <p *ngIf="loading">Loading notes...</p>
@@ -16,7 +16,8 @@
     <article class="note-card" *ngFor="let note of notes">
       <p>{{ note.note }}</p>
       <footer><span>Incident #{{ note.incident_id }}</span><span *ngIf="note.recommendation">{{ note.recommendation }}</span><span *ngIf="note.created_at">{{ note.created_at | date:'medium' }}</span></footer>
-      <div class="card-actions" *ngIf="canManage"><a [routerLink]="['/notes', note.id, 'edit']">Edit</a><button type="button" (click)="deleteNote(note)">Delete</button></div>
+      <div class="card-actions" *ngIf="canManage"><a href="/notes/{{ note.id }}/edit" (click)="openModal(note.id); $event.preventDefault()">Edit</a><button type="button" (click)="deleteNote(note)">Delete</button></div>
     </article>
   </div>
 </section>
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"><section #noteModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Investigation note form" (click)="$event.stopPropagation()"><app-notes-form [modal]="true" [noteIdInput]="editingId" (saved)="closeModal(); load()" (cancelled)="closeModal()"></app-notes-form></section></div>

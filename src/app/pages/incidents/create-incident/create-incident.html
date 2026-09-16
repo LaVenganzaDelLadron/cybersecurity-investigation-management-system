@@ -1,5 +1,5 @@
 <section class="form-shell">
-  <h1>Create incident</h1>
+  <header class="form-header"><div><span class="eyebrow">Incident management</span><h2>Create incident</h2></div><button *ngIf="modal" type="button" class="close-btn" aria-label="Close" (click)="cancel()">×</button></header>
   <form [formGroup]="form" (ngSubmit)="submit()" class="incident-form">
     <label><span>Title</span><input formControlName="title" /></label>
     <label><span>Description</span><textarea formControlName="description"></textarea></label>
@@ -12,5 +12,6 @@
     <label><span>Incident date</span><input formControlName="incident_date" type="datetime-local" /></label>
     <div class="error-box" *ngIf="error">{{ error }}</div>
     <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save incident' }}</button>
+    <button *ngIf="modal" type="button" class="secondary" (click)="cancel()" [disabled]="loading">Cancel</button>
   </form>
 </section>

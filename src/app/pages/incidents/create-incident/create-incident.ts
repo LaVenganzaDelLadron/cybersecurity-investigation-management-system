@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncidentPayload } from '../../../core/models/incident.model';
@@ -15,6 +15,9 @@ import { CategoryService } from '../../../core/services/category.service';
   templateUrl: './create-incident.html',
 })
 export class CreateIncident {
+  @Input() modal = false;
+  @Output() saved = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   form;
 
   loading = false;
@@ -64,11 +67,16 @@ export class CreateIncident {
     };
 
     this.incidentService.create(payload).subscribe({
-      next: () => this.router.navigateByUrl('/incidents'),
+      next: () => this.modal ? this.saved.emit() : this.router.navigateByUrl('/incidents'),
       error: () => {
         this.error = 'Unable to create the incident.';
         this.loading = false;
       },
     });
+  }
+
+  cancel(): void {
+    if (this.modal) this.cancelled.emit();
+    else void this.router.navigateByUrl('/incidents');
   }
 }
