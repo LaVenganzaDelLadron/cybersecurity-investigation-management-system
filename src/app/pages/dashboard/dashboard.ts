@@ -3,7 +3,7 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Incident } from '../../core/models/incident.model';
 import { Category } from '../../core/models/category.model';
 import { InvestigationNote } from '../../core/models/investigation-note.model';
