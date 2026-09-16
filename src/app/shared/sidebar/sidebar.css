@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  min-height: 100vh;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: rgba(6, 17, 31, 0.96);
+  border-right: 1px solid rgba(124, 198, 255, 0.16);
+  z-index: 20;
+}
+
+.brand, .user-card, nav a, .logout {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 11px;
+  padding: 0 10px 26px;
+}
+
+.brand-mark, .avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4b9eff, #67d6ba);
+  color: #06111f;
+  font-weight: 800;
+}
+
+.brand-mark { width: 34px; height: 34px; }
+.brand strong { display: block; letter-spacing: .12em; }
+.brand div span, .user-card span { display: block; color: #86a1c2; font-size: .72rem; }
+
+.user-card {
+  gap: 10px;
+  padding: 13px 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(124, 198, 255, 0.14);
+  border-radius: 12px;
+}
+
+.avatar { width: 32px; height: 32px; border-radius: 50%; }
+.user-card strong { display: block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .85rem; }
+
+nav { display: grid; gap: 4px; }
+nav a {
+  gap: 10px;
+  padding: 10px;
+  border-radius: 9px;
+  color: #afc5e3;
+  text-decoration: none;
+  font-size: .88rem;
+  transition: background .15s ease, color .15s ease;
+}
+nav a:hover, nav a.active { background: rgba(76, 159, 255, .16); color: #f2f7ff; }
+nav a.active { box-shadow: inset 3px 0 #62b2ff; }
+.nav-dot { width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; }
+
+.logout {
+  gap: 10px;
+  margin-top: auto;
+  padding: 12px 10px 0;
+  border: 0;
+  background: none;
+  color: #afc5e3;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+.logout:hover { color: #fff; }
+.menu-toggle, .sidebar-backdrop { display: none; }
+
+@media (max-width: 760px) {
+  .menu-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid rgba(124, 198, 255, .3);
+    border-radius: 8px;
+    background: #0b1c2d;
+    color: #e5eefb;
+    cursor: pointer;
+    z-index: 30;
+  }
+  .menu-icon { font-size: 1.1rem; }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-backdrop.visible {
+    position: fixed;
+    inset: 0;
+    display: block;
+    background: rgba(0, 0, 0, .55);
+    z-index: 10;
+  }
+}

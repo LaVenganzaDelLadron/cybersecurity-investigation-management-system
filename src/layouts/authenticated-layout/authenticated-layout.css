@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.authenticated-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  min-width: 0;
+  flex: 1;
+}
+
+@media (max-width: 760px) {
+  .content { width: 100%; }
+}

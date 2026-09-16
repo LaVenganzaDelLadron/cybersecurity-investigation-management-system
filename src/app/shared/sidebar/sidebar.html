@@ -1,1 +1,44 @@
-<p>sidebar works!</p>
+<button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isOpen">
+  <span class="menu-icon" aria-hidden="true">&#9776;</span>
+  <span>Menu</span>
+</button>
+
+<div class="sidebar-backdrop" [class.visible]="isOpen" (click)="closeMenu()"></div>
+
+<aside class="sidebar" [class.open]="isOpen" aria-label="Primary navigation">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">C</span>
+    <div>
+      <strong>CIMS</strong>
+      <span>Incident management</span>
+    </div>
+  </div>
+
+  <ng-container *ngIf="currentUser$ | async as user">
+    <div class="user-card">
+      <span class="avatar">{{ (user.name || user.email).charAt(0).toUpperCase() }}</span>
+      <div>
+        <strong>{{ user.name || user.email }}</strong>
+        <span>{{ user.role | titlecase }}</span>
+      </div>
+    </div>
+
+    <nav>
+      <a
+        *ngFor="let item of visibleItems(user.role)"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+        (click)="closeMenu()"
+      >
+        <span class="nav-dot" aria-hidden="true"></span>
+        {{ item.label }}
+      </a>
+    </nav>
+  </ng-container>
+
+  <button class="logout" type="button" (click)="logout()">
+    <span aria-hidden="true">&#8592;</span>
+    Sign out
+  </button>
+</aside>

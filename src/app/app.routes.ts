@@ -16,6 +16,7 @@ import { AttachmentList } from './pages/attachements/attachment-list/attachment-
 import { ChatAi } from './pages/chats/chat-ai/chat-ai';
 import { AuditLogs } from './pages/audit-logs/audit-logs';
 import { Profile } from './pages/profile/profile';
+import { AuthenticatedLayout } from '../layouts/authenticated-layout/authenticated-layout';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,7 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
+    component: AuthenticatedLayout,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: Dashboard },
