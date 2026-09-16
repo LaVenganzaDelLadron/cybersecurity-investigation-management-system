@@ -3,37 +3,79 @@
     <div>
       <span class="eyebrow">Overview</span>
       <h1>Security dashboard</h1>
+      <p class="subtitle">A clear view of your incident operations and connected records.</p>
     </div>
-    <span class="role-pill">{{ role | uppercase }}</span>
+    <div class="header-actions">
+      <button type="button" class="secondary-btn" (click)="loadDashboard()" [disabled]="loading">Refresh</button>
+      <span class="role-pill">{{ role | uppercase }}</span>
+    </div>
   </header>
 
-  <p *ngIf="loading">Loading dashboard...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
-  <div class="stats-grid">
+  <div class="stats-grid" *ngIf="!loading">
     <article class="stat-card" *ngFor="let stat of stats" [ngClass]="stat.tone">
       <span>{{ stat.label }}</span>
       <strong>{{ stat.value }}</strong>
     </article>
   </div>
+  <div class="stats-grid skeleton-grid" *ngIf="loading">
+    <span class="skeleton-card" *ngFor="let item of [1, 2, 3, 4]"></span>
+  </div>
+
+  <section class="section-heading">
+    <div>
+      <span class="eyebrow">Workspace data</span>
+      <h2>Everything at a glance</h2>
+    </div>
+    <span class="muted">Select a card to preview its records</span>
+  </section>
+
+  <div class="cards-grid" *ngIf="!loading">
+    <button class="data-card" *ngFor="let card of cards" type="button" [ngClass]="card.tone" (click)="openResource(card.key)">
+      <span class="card-icon" aria-hidden="true">{{ card.label.charAt(0) }}</span>
+      <span class="card-copy"><strong>{{ card.label }}</strong><small>{{ card.description }}</small></span>
+      <strong class="card-count">{{ card.count }}</strong>
+      <span class="card-link">View details <span aria-hidden="true">→</span></span>
+      <span class="warning-dot" *ngIf="resourceHasError(card.key)" title="Some data could not be loaded">!</span>
+    </button>
+  </div>
 
   <div class="panel-grid">
     <article class="panel">
-      <h2>Recent incidents</h2>
-      <p *ngIf="!loading && !recentIncidents.length">No incidents have been reported.</p>
-      <ul *ngIf="recentIncidents.length">
+      <div class="panel-heading"><div><span class="eyebrow">Latest</span><h2>Recent incidents</h2></div><a routerLink="/incidents">View all</a></div>
+      <p class="muted" *ngIf="!loading && !recentIncidents.length">No incidents have been reported.</p>
+      <ul class="incident-list" *ngIf="recentIncidents.length">
         <li *ngFor="let incident of recentIncidents">
-          <span>{{ incident.title }}</span><em>{{ incident.severity }} · {{ incident.status }}</em>
+          <span class="incident-title"><strong>{{ incident.title }}</strong><small>{{ incident.location || 'Location not provided' }}</small></span>
+          <span class="incident-meta"><em>{{ incident.severity }}</em><small>{{ incident.status }}</small></span>
         </li>
       </ul>
     </article>
-
-    <article class="panel">
-      <h2>Operational notes</h2>
-      <ul>
-        <li>Threat intel sync is current.</li>
-        <li>Two analyst escalations need action.</li>
-        <li>Backups verified for priority assets.</li>
-      </ul>
+    <article class="panel quick-panel">
+      <div><span class="eyebrow">Quick actions</span><h2>Get things done</h2></div>
+      <a routerLink="/incidents/new">Report an incident <span>→</span></a>
+      <a routerLink="/chat">Ask the AI assistant <span>→</span></a>
+      <a routerLink="/profile">Review your profile <span>→</span></a>
     </article>
   </div>
 </section>
+
+<div class="modal-backdrop" *ngIf="selectedResource" (click)="closeResource()">
+  <section class="resource-modal" role="dialog" aria-modal="true" [attr.aria-label]="selectedCard?.label" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <div><span class="eyebrow">Data preview</span><h2>{{ selectedCard?.label }}</h2></div>
+      <button type="button" class="close-btn" aria-label="Close preview" (click)="closeResource()">×</button>
+    </header>
+    <p class="muted">{{ selectedCard?.description }} · {{ selectedCard?.count }} total</p>
+    <div class="modal-list" [ngSwitch]="selectedResource">
+      <ng-container *ngSwitchCase="'incidents'"><div class="modal-row" *ngFor="let item of incidents"><strong>{{ item.title }}</strong><span>{{ item.severity }} · {{ item.status }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'categories'"><div class="modal-row" *ngFor="let item of categories"><strong>{{ item.name }}</strong><span>{{ item.description || 'No description' }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'notes'"><div class="modal-row" *ngFor="let item of notes"><strong>Incident #{{ item.incident_id }}</strong><span>{{ item.note }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'attachments'"><div class="modal-row" *ngFor="let item of attachments"><strong>{{ item.filename }}</strong><span>Incident #{{ item.incident_id || '—' }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'chats'"><div class="modal-row" *ngFor="let item of chats"><strong>{{ item.userinput }}</strong><span>{{ item.response || 'No response yet' }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'users'"><div class="modal-row" *ngFor="let item of users"><strong>{{ item.full_name || ((item.firstname || '') + ' ' + (item.lastname || '')) || item.email }}</strong><span>{{ item.role }} · {{ item.status }}</span></div></ng-container>
+      <ng-container *ngSwitchCase="'auditLogs'"><div class="modal-row" *ngFor="let item of auditLogs"><strong>{{ item.action }}</strong><span>{{ item.resource_type || 'System' }} · {{ item.created_at | date:'medium' }}</span></div></ng-container>
+    </div>
+    <footer class="modal-footer"><a [routerLink]="selectedCard?.route" (click)="closeResource()">Open full page <span>→</span></a></footer>
+  </section>
+</div>
