@@ -40,7 +40,7 @@ export const routes: Routes = [
       { path: 'incidents', component: IncidentList },
       { path: 'incidents/new', component: CreateIncident },
       { path: 'incidents/:id', component: IncidentDetails },
-      { path: 'incidents/:id/edit', component: EditIncident },
+      { path: 'incidents/:id/edit', component: EditIncident, canActivate: [AnalystGuard] },
       { path: 'categories', component: CategotyList, canActivate: [AdminGuard] },
       { path: 'categories/new', component: CategotyForm, canActivate: [AdminGuard] },
       { path: 'categories/:id/edit', component: CategotyForm, canActivate: [AdminGuard] },

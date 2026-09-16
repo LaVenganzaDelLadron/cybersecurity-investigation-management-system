@@ -19,6 +19,7 @@ export class NotesList {
   error = '';
   success = '';
   readonly canManage: boolean;
+  readonly canDelete: boolean;
   modalOpen = false;
   editingId: number | null = null;
   @ViewChild('noteModal') noteModal?: ElementRef<HTMLElement>;
@@ -30,6 +31,7 @@ export class NotesList {
     route: ActivatedRoute,
   ) {
     this.canManage = authService.hasRole(['admin', 'analyst']);
+    this.canDelete = authService.hasRole('admin');
     const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
     this.load(incidentId);
   }

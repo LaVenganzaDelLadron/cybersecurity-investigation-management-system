@@ -21,6 +21,7 @@ export class AttachmentList {
   editing: Attachment | null = null;
   formOpen = false;
   readonly canManage: boolean;
+  readonly canDelete: boolean;
   readonly form;
   @ViewChild('attachmentModal') attachmentModal?: ElementRef<HTMLElement>;
   private modalTrigger: HTMLElement | null = null;
@@ -32,6 +33,7 @@ export class AttachmentList {
     route: ActivatedRoute,
   ) {
     this.canManage = authService.hasRole(['admin', 'analyst']);
+    this.canDelete = authService.hasRole('admin');
     this.form = this.fb.group({
       incident_id: [null as number | null],
       filename: ['', Validators.required],

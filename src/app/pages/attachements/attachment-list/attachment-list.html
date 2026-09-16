@@ -12,14 +12,14 @@
   <p class="success-box" *ngIf="success">{{ success }}</p>
   <p *ngIf="!loading && !attachments.length">No attachments found.</p>
   <table class="data-table" *ngIf="!loading && attachments.length">
-    <thead><tr><th>Filename</th><th>Type</th><th>Incident</th><th>Path</th><th *ngIf="canManage">Actions</th></tr></thead>
+    <thead><tr><th>Filename</th><th>Type</th><th>Incident</th><th>Path</th><th *ngIf="canManage || canDelete">Actions</th></tr></thead>
     <tbody>
       <tr *ngFor="let attachment of attachments">
         <td>{{ attachment.filename }}</td>
         <td>{{ attachment.filetype }}</td>
         <td>{{ attachment.incident_id ? '#' + attachment.incident_id : 'Unassigned' }}</td>
         <td>{{ attachment.filepath || '—' }}</td>
-        <td *ngIf="canManage"><button type="button" class="link-button" (click)="startEdit(attachment)">Edit</button><button type="button" class="link-button" (click)="deleteAttachment(attachment)">Delete</button></td>
+        <td *ngIf="canManage || canDelete"><button *ngIf="canManage" type="button" class="link-button" (click)="startEdit(attachment)">Edit</button><button *ngIf="canDelete" type="button" class="link-button" (click)="deleteAttachment(attachment)">Delete</button></td>
       </tr>
     </tbody>
   </table>

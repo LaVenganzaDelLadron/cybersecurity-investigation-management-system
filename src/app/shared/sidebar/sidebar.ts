@@ -7,7 +7,7 @@ import type { UserRole } from '../../types';
 interface SidebarItem {
   label: string;
   route: string;
-  roles?: UserRole[];
+  roles: UserRole[];
 }
 
 @Component({
@@ -24,20 +24,20 @@ export class Sidebar {
   isOpen = false;
 
   readonly items: SidebarItem[] = [
-    { label: 'Dashboard', route: '/dashboard' },
-    { label: 'Incidents', route: '/incidents' },
-    { label: 'New incident', route: '/incidents/new' },
-    { label: 'Categories', route: '/categories' },
+    { label: 'Dashboard', route: '/dashboard', roles: ['admin', 'analyst', 'user'] },
+    { label: 'Incidents', route: '/incidents', roles: ['admin', 'analyst', 'user'] },
+    { label: 'Report incident', route: '/incidents/new', roles: ['admin', 'analyst', 'user'] },
+    { label: 'Categories', route: '/categories', roles: ['admin'] },
     { label: 'Investigation notes', route: '/notes', roles: ['admin', 'analyst'] },
-    { label: 'Attachments', route: '/attachments' },
-    { label: 'AI assistant', route: '/chat' },
-    { label: 'Users', route: '/users', roles: ['admin'] },
+    { label: 'Attachments', route: '/attachments', roles: ['admin', 'analyst', 'user'] },
+    { label: 'AI assistant', route: '/chat', roles: ['admin', 'analyst', 'user'] },
+    { label: 'Users and roles', route: '/users', roles: ['admin'] },
     { label: 'Audit logs', route: '/audit-logs', roles: ['admin'] },
-    { label: 'Profile', route: '/profile' },
+    { label: 'Profile', route: '/profile', roles: ['admin', 'analyst', 'user'] },
   ];
 
   visibleItems(role: UserRole | undefined): SidebarItem[] {
-    return this.items.filter((item) => !item.roles || (!!role && item.roles.includes(role)));
+    return this.items.filter((item) => !!role && item.roles.includes(role));
   }
 
   closeMenu(): void {

@@ -19,6 +19,8 @@ export class IncidentDetails {
   loading = true;
   error = '';
   readonly isAdmin: boolean;
+  readonly canEdit: boolean;
+  readonly canInvestigate: boolean;
 
   constructor(
     route: ActivatedRoute,
@@ -27,6 +29,8 @@ export class IncidentDetails {
     private readonly router: Router,
   ) {
     this.isAdmin = authService.hasRole('admin');
+    this.canEdit = authService.hasRole(['admin', 'analyst']);
+    this.canInvestigate = authService.hasRole(['admin', 'analyst']);
     const id = Number(route.snapshot.paramMap.get('id'));
     incidentService.get(id).subscribe({
       next: (incident) => {

@@ -19,6 +19,7 @@ export class IncidentList {
   loading = true;
   error = '';
   readonly isAdmin: boolean;
+  readonly canEdit: boolean;
   modal: 'create' | 'edit' | null = null;
   editingId: number | null = null;
   @ViewChild('incidentModal') incidentModal?: ElementRef<HTMLElement>;
@@ -29,6 +30,7 @@ export class IncidentList {
     authService: AuthService,
   ) {
     this.isAdmin = authService.hasRole('admin');
+    this.canEdit = authService.hasRole(['admin', 'analyst']);
     this.loadIncidents();
   }
 
