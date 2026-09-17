@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, timeout } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Incident, IncidentPayload } from '../models/incident.model';
 import { RequestCacheService } from './request-cache.service';
@@ -17,7 +17,7 @@ export class IncidentService {
   }
 
   get(id: number): Observable<Incident> {
-    return this.http.get<Incident>(`${this.baseUrl}/${id}`);
+    return this.http.get<Incident>(`${this.baseUrl}/${id}`).pipe(timeout({ first: 10_000 }));
   }
 
   create(payload: IncidentPayload): Observable<Incident> {
