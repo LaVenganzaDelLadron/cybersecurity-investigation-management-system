@@ -6,14 +6,8 @@
 .eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
 h1 { margin:8px 0 0; }
 .primary-btn { background:linear-gradient(135deg, #1a6ef1, #35b9ff); border:none; border-radius:10px; padding:10px 14px; color:white; font-weight:700; cursor:pointer; }
-.notes-list { display:grid; gap:16px; }
-.note-card { background: rgba(14,25,35,0.9); border:1px solid rgba(120,150,180,0.18); border-radius:16px; padding:18px; }
-.note-card p { margin:0 0 10px; color:#dfeafc; }
-.note-card footer { color:#7cc6ff; }
-.note-card footer { display:flex; gap:16px; flex-wrap:wrap; }
-.card-actions { margin-top:14px; display:flex; gap:12px; }
-.card-actions a, .card-actions button { color:#7cc6ff; background:none; border:0; padding:0; cursor:pointer; text-decoration:none; font:inherit; }
+.record-card .record-subtitle { display:block; color:#dfeafc; }
 .success-box { color:#8de0ad; }
 .page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
-.note-card, .resource-modal { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); }
+.resource-modal { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); }
 .primary-btn { background:linear-gradient(135deg,#1677d8,#35d4ed); }

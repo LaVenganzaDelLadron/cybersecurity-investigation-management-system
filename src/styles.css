@@ -109,6 +109,48 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 8px 24px rgba(20, 145, 224, .2);
 }
 .error-box { border-radius: 11px; }
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+.record-card {
+  display: flex;
+  min-height: 210px;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--soc-line);
+  border-radius: 0;
+  background: linear-gradient(145deg, rgba(13, 32, 50, .92), rgba(7, 18, 30, .9));
+  box-shadow: var(--soc-shadow);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.record-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--soc-line-strong);
+  box-shadow: var(--soc-shadow), 0 0 26px rgba(71, 215, 255, .08);
+}
+.record-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(71, 215, 255, .16);
+  color: var(--soc-cyan);
+  font-weight: 800;
+}
+.record-card h2, .record-card h3 { margin: 16px 0 6px; color: var(--soc-text); }
+.record-card h2 { font-size: 1.05rem; }
+.record-card h3 { font-size: .96rem; }
+.record-subtitle, .record-meta { color: var(--soc-muted); font-size: .84rem; line-height: 1.45; }
+.record-meta { display: grid; gap: 7px; margin-top: 14px; }
+.record-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 18px; }
+.record-actions a, .record-actions button { color: var(--soc-cyan); }
+@media (max-width: 560px) {
+  .record-grid { grid-template-columns: 1fr; }
+  .record-card { min-height: 190px; }
+}
 @media (max-width: 560px) {
   .page-shell :is(.resource-modal, .category-modal) {
     border-radius: var(--soc-card-radius) var(--soc-card-radius) 0 0 !important;

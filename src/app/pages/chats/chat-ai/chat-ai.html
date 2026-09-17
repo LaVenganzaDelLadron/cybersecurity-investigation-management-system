@@ -8,8 +8,10 @@
 
   <p *ngIf="loading">Loading conversation...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
-  <div class="chat-window">
-    <article class="message" *ngFor="let message of messages">
+  <div class="record-grid chat-window">
+    <article class="record-card message" *ngFor="let message of messages">
+      <span class="record-icon" aria-hidden="true">AI</span>
+      <h2>Conversation #{{ message.id }}</h2>
       <div class="message-user">
         <span class="message-avatar" aria-hidden="true">Y</span>
         <strong>You</strong>

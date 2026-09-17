@@ -11,18 +11,18 @@
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="error-box" *ngIf="actionError">{{ actionError }}</p>
 
-  <table class="data-table" *ngIf="!loading && categories.length">
-    <thead>
-      <tr><th>Name</th><th>Description</th><th *ngIf="canManage">Actions</th></tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let category of categories">
-        <td>{{ category.name }}</td>
-        <td>{{ category.description }}</td>
-        <td *ngIf="canManage"><button type="button" (click)="edit(category.id)">Edit</button> <button type="button" (click)="remove(category)">Delete</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="record-grid" *ngIf="!loading && categories.length">
+    <article class="record-card" *ngFor="let category of categories">
+      <span class="record-icon" aria-hidden="true">C</span>
+      <h2>{{ category.name }}</h2>
+      <span class="record-subtitle">{{ category.description || 'Incident classification group' }}</span>
+      <span class="record-meta">Category ID: #{{ category.id }}</span>
+      <div class="record-actions" *ngIf="canManage">
+        <button type="button" (click)="edit(category.id)">Edit</button>
+        <button type="button" (click)="remove(category)">Delete</button>
+      </div>
+    </article>
+  </div>
   <p *ngIf="!loading && !categories.length">No categories found.</p>
 </section>
 

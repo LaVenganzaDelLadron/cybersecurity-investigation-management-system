@@ -11,18 +11,21 @@
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="success-box" *ngIf="success">{{ success }}</p>
   <p *ngIf="!loading && !attachments.length">No attachments found.</p>
-  <table class="data-table" *ngIf="!loading && attachments.length">
-    <thead><tr><th>Filename</th><th>Type</th><th>Incident</th><th>Path</th><th *ngIf="canManage || canDelete">Actions</th></tr></thead>
-    <tbody>
-      <tr *ngFor="let attachment of attachments">
-        <td>{{ attachment.filename }}</td>
-        <td>{{ attachment.filetype }}</td>
-        <td>{{ attachment.incident_id ? '#' + attachment.incident_id : 'Unassigned' }}</td>
-        <td>{{ attachment.filepath || '—' }}</td>
-        <td *ngIf="canManage || canDelete"><button *ngIf="canManage" type="button" class="link-button" (click)="startEdit(attachment)">Edit</button><button *ngIf="canDelete" type="button" class="link-button" (click)="deleteAttachment(attachment)">Delete</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="record-grid" *ngIf="!loading && attachments.length">
+    <article class="record-card" *ngFor="let attachment of attachments">
+      <span class="record-icon" aria-hidden="true">A</span>
+      <h2>{{ attachment.filename }}</h2>
+      <span class="record-subtitle">{{ attachment.filetype || 'Unknown file type' }}</span>
+      <div class="record-meta">
+        <span>Incident: {{ attachment.incident_id ? '#' + attachment.incident_id : 'Unassigned' }}</span>
+        <span>Path: {{ attachment.filepath || 'Server-managed storage' }}</span>
+      </div>
+      <div class="record-actions" *ngIf="canManage || canDelete">
+        <button *ngIf="canManage" type="button" (click)="startEdit(attachment)">Edit</button>
+        <button *ngIf="canDelete" type="button" (click)="deleteAttachment(attachment)">Delete</button>
+      </div>
+    </article>
+  </div>
 </section>
 <div class="modal-backdrop" *ngIf="canManage && formOpen" (click)="cancelEdit()"><section #attachmentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Attachment form" (click)="$event.stopPropagation()">
   <header class="form-header"><h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2><button type="button" class="close-btn" aria-label="Close" (click)="cancelEdit()">×</button></header>

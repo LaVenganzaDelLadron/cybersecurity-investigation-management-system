@@ -12,11 +12,20 @@
   <p class="success-box" *ngIf="success">{{ success }}</p>
   <p *ngIf="!loading && !notes.length">No investigation notes found.</p>
 
-  <div class="notes-list">
-    <article class="note-card" *ngFor="let note of notes">
-      <p>{{ note.note }}</p>
-      <footer><span>Incident #{{ note.incident_id }}</span><span *ngIf="note.recommendation">{{ note.recommendation }}</span><span *ngIf="note.created_at">{{ note.created_at | date:'medium' }}</span></footer>
-      <div class="card-actions" *ngIf="canManage || canDelete"><a *ngIf="canManage" href="/notes/{{ note.id }}/edit" (click)="openModal(note.id); $event.preventDefault()">Edit</a><button *ngIf="canDelete" type="button" (click)="deleteNote(note)">Delete</button></div>
+  <div class="record-grid" *ngIf="!loading && notes.length">
+    <article class="record-card" *ngFor="let note of notes">
+      <span class="record-icon" aria-hidden="true">N</span>
+      <h2>Investigation note #{{ note.id }}</h2>
+      <span class="record-subtitle">{{ note.note }}</span>
+      <div class="record-meta">
+        <span>Incident #{{ note.incident_id }}</span>
+        <span *ngIf="note.recommendation">Recommendation: {{ note.recommendation }}</span>
+        <span *ngIf="note.created_at">{{ note.created_at | date:'medium' }}</span>
+      </div>
+      <div class="record-actions" *ngIf="canManage || canDelete">
+        <a *ngIf="canManage" href="/notes/{{ note.id }}/edit" (click)="openModal(note.id); $event.preventDefault()">Edit</a>
+        <button *ngIf="canDelete" type="button" (click)="deleteNote(note)">Delete</button>
+      </div>
     </article>
   </div>
 </section>

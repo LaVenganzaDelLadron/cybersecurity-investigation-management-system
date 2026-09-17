@@ -15,28 +15,22 @@
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p *ngIf="!loading && !error && !incidents.length">No incidents found.</p>
 
-  <table class="data-table" *ngIf="!loading && incidents.length">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Severity</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let incident of incidents">
-        <td>{{ incident.title }}</td>
-        <td><span class="badge status-{{ incident.status }}">{{ incident.status }}</span></td>
-        <td><span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></td>
-        <td>
-          <a [routerLink]="viewRoute(incident.id)" (click)="openView(incident.id, $event)">View</a>
-          <a *ngIf="canEdit" href="/incidents/{{ incident.id }}/edit" (click)="openEdit(incident.id, $event)">Edit</a>
-          <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="record-grid" *ngIf="!loading && incidents.length">
+    <article class="record-card" *ngFor="let incident of incidents">
+      <span class="record-icon" aria-hidden="true">I</span>
+      <h2>{{ incident.title }}</h2>
+      <span class="record-subtitle">{{ incident.location || 'Security incident case' }}</span>
+      <div class="record-meta">
+        <span><strong>Status:</strong> <span class="badge status-{{ incident.status }}">{{ incident.status }}</span></span>
+        <span><strong>Severity:</strong> <span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></span>
+      </div>
+      <div class="record-actions">
+        <a [routerLink]="viewRoute(incident.id)" (click)="openView(incident.id, $event)">View details →</a>
+        <a *ngIf="canEdit" href="/incidents/{{ incident.id }}/edit" (click)="openEdit(incident.id, $event)">Edit</a>
+        <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
+      </div>
+    </article>
+  </div>
 </section>
 
 <div class="modal-backdrop" *ngIf="modal" (click)="closeModal()">
