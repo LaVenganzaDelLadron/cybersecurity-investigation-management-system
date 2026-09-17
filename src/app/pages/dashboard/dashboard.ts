@@ -95,10 +95,10 @@ export class Dashboard {
 
   get stats() {
     return [
-      { label: 'Open incidents', value: this.incidents.filter((incident) => !['resolved', 'closed'].includes(this.normalise(incident.status))), tone: 'accent' },
+      { label: 'Open incidents', value: this.incidents.filter((incident) => !['resolved', 'closed'].includes(this.normalise(incident.status))).length, tone: 'accent' },
       { label: 'Investigating', value: this.countByStatus('investigating'), tone: 'warning' },
       { label: 'Resolved', value: this.countByStatus('resolved'), tone: 'success' },
-      { label: 'Critical alerts', value: this.incidents.filter((incident) => this.normalise(incident.severity) === 'critical'), tone: 'danger' },
+      { label: 'Critical alerts', value: this.incidents.filter((incident) => this.normalise(incident.severity) === 'critical').length, tone: 'danger' },
     ];
   }
 
