@@ -9,11 +9,17 @@
   <p *ngIf="loading">Loading conversation...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <div class="chat-window">
-    <div class="message" *ngFor="let message of messages">
-      <strong>You</strong>
-      <p>{{ message.userinput }}</p>
-      <strong>AI</strong>
-      <p>{{ message.response }}</p>
+    <article class="message" *ngFor="let message of messages">
+      <div class="message-user">
+        <span class="message-avatar" aria-hidden="true">Y</span>
+        <strong>You</strong>
+      </div>
+      <p class="user-content">{{ message.userinput }}</p>
+      <div class="message-assistant">
+        <span class="message-avatar assistant-avatar" aria-hidden="true">AI</span>
+        <strong>AI assistant</strong>
+      </div>
+      <div class="assistant-content" [innerHTML]="renderAssistantMessage(message.response)"></div>
       <div class="message-actions">
         <button type="button" (click)="edit(message)" *ngIf="editingId !== message.id">Edit</button>
         <button type="button" (click)="regenerate(message)" [disabled]="sending">Regenerate</button>
@@ -24,7 +30,7 @@
         <button type="submit" [disabled]="sending">Save</button>
         <button type="button" (click)="cancelEdit()">Cancel</button>
       </form>
-    </div>
+    </article>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="send()" class="chat-form">

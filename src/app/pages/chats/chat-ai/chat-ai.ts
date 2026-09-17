@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ChatMessage } from '../../../core/models/chat.model';
 import { ChatService } from '../../../core/services/chat.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { marked } from 'marked';
 
 @Component({
   selector: 'app-chat-ai',
@@ -26,12 +28,27 @@ export class ChatAi {
     private readonly fb: FormBuilder,
     private readonly chatService: ChatService,
     private readonly authService: AuthService,
+    private readonly sanitizer: DomSanitizer,
   ) {
     this.form = this.fb.group({
       message: ['', Validators.required],
     });
     this.isAdmin = this.authService.hasRole('admin');
     this.loadHistory();
+  }
+
+  renderAssistantMessage(response: string | null | undefined): string {
+    if (!response?.trim()) {
+      return '<p class="empty-response">No response yet.</p>';
+    }
+
+    const html = marked.parse(response, {
+      async: false,
+      breaks: true,
+      gfm: true,
+    });
+
+    return this.sanitizer.sanitize(SecurityContext.HTML, html) ?? '';
   }
 
   loadHistory(): void {
