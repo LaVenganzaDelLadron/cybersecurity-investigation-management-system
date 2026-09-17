@@ -27,7 +27,6 @@
         <span><strong>Severity:</strong> <span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></span>
       </div>
       <div class="record-actions">
-        <a [routerLink]="viewRoute(incident.id)" (click)="openView(incident.id, $event)">View details →</a>
         <a *ngIf="canEdit" href="/incidents/{{ incident.id }}/edit" (click)="openEdit(incident.id, $event)">Edit</a>
         <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
       </div>
