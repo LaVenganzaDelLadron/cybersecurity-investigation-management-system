@@ -1,42 +1,97 @@
-<section class="page-shell">
-  <header class="page-header">
-    <div>
-      <span class="eyebrow">AI assistant</span>
-      <h1>Investigation copilot</h1>
+<section class="chat-page" [class.sidebar-collapsed]="!sidebarOpen">
+  <aside class="chat-sidebar" [attr.aria-hidden]="!sidebarOpen">
+    <div class="sidebar-brand">
+      <div class="brand-mark">✦</div>
+      <div><strong>Cybersecurity AI</strong><span>SOC intelligence</span></div>
+      <button class="icon-btn sidebar-close" type="button" aria-label="Collapse chat history" (click)="toggleSidebar()">‹</button>
     </div>
-  </header>
+    <button class="new-chat-btn" type="button" (click)="newChat()"><span>＋</span> New chat</button>
+    <label class="history-search">
+      <span aria-hidden="true">⌕</span>
+      <input [(ngModel)]="historySearch" placeholder="Search conversations" aria-label="Search conversations">
+    </label>
+    <div class="history-label">Recent chats</div>
+    <nav class="history-list" aria-label="Conversation history">
+      <button class="history-item" *ngFor="let message of filteredHistory; let first = first" type="button" [class.active]="first" (click)="focusComposer()">
+        <span class="history-icon">◌</span>
+        <span>{{ message.userinput | slice:0:38 }}{{ message.userinput.length > 38 ? '…' : '' }}</span>
+      </button>
+      <p class="history-empty" *ngIf="!filteredHistory.length">No conversations found.</p>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="status-dot"></span>
+      <span>Protected SOC workspace</span>
+    </div>
+  </aside>
 
-  <p *ngIf="loading">Loading conversation...</p>
-  <p class="error-box" *ngIf="error">{{ error }}</p>
-  <div class="record-grid chat-window">
-    <article class="record-card message" *ngFor="let message of messages">
-      <span class="record-icon" aria-hidden="true">AI</span>
-      <h2>Conversation #{{ message.id }}</h2>
-      <div class="message-user">
-        <span class="message-avatar" aria-hidden="true">Y</span>
-        <strong>You</strong>
+  <main class="chat-main">
+    <header class="chat-header">
+      <div class="header-leading">
+        <button class="icon-btn menu-toggle" type="button" aria-label="Toggle chat history" (click)="toggleSidebar()">☰</button>
+        <div>
+          <div class="assistant-title"><span class="online-dot"></span> Cybersecurity AI Assistant <span class="verified">✓</span></div>
+          <div class="conversation-title">{{ conversationTitle }}</div>
+        </div>
       </div>
-      <p class="user-content">{{ message.userinput }}</p>
-      <div class="message-assistant">
-        <span class="message-avatar assistant-avatar" aria-hidden="true">AI</span>
-        <strong>AI assistant</strong>
+      <div class="header-actions">
+        <label class="model-select"><span>Model</span><select aria-label="AI model"><option>CyberSec GPT</option><option>Threat Analyst</option></select></label>
+        <button class="icon-btn" type="button" title="New chat" aria-label="New chat" (click)="newChat()">＋</button>
+        <button class="icon-btn" type="button" title="Clear chat" aria-label="Clear chat" (click)="clearChat()">⌫</button>
+        <button class="icon-btn" type="button" title="Export conversation" aria-label="Export conversation" (click)="exportConversation()">⇩</button>
+        <button class="icon-btn" type="button" title="More options" aria-label="More options">•••</button>
       </div>
-      <div class="assistant-content" [innerHTML]="renderAssistantMessage(message.response)"></div>
-      <div class="message-actions">
-        <button type="button" (click)="edit(message)" *ngIf="editingId !== message.id">Edit</button>
-        <button type="button" (click)="regenerate(message)" [disabled]="sending">Regenerate</button>
-        <button type="button" (click)="delete(message)" *ngIf="isAdmin">Delete</button>
+    </header>
+
+    <div class="conversation-scroll">
+      <div class="conversation-intro" *ngIf="!messages.length && !loading">
+        <div class="intro-orb">✦</div>
+        <h1>How can I help secure your environment?</h1>
+        <p>Ask about incidents, investigations, vulnerabilities, or defensive controls.</p>
+        <div class="prompt-suggestions">
+          <button type="button" (click)="form.controls.message.setValue('Summarize our open incidents')">Summarize open incidents</button>
+          <button type="button" (click)="form.controls.message.setValue('How can we prevent phishing?')">Prevent phishing attacks</button>
+        </div>
       </div>
-      <form *ngIf="editingId === message.id" (ngSubmit)="saveEdit(message)" class="edit-form">
-        <input [formControl]="form.controls.message" />
-        <button type="submit" [disabled]="sending">Save</button>
-        <button type="button" (click)="cancelEdit()">Cancel</button>
+      <p class="loading-state" *ngIf="loading"><span class="thinking-dots"><i></i><i></i><i></i></span> Loading secure conversation...</p>
+      <p class="error-box" *ngIf="error">{{ error }}</p>
+
+      <article class="conversation-entry" *ngFor="let message of messages">
+        <div class="user-row">
+          <div class="avatar user-avatar">Y</div>
+          <div class="user-bubble">{{ message.userinput }}</div>
+          <time>{{ formatDate(message.created_at) }}</time>
+        </div>
+        <div class="assistant-row">
+          <div class="avatar ai-avatar">✦</div>
+          <div class="assistant-message">
+            <div class="message-label">Cybersecurity AI <span>• {{ formatDate(message.updated_at || message.created_at) }}</span></div>
+            <div class="assistant-content" [innerHTML]="renderAssistantMessage(message.response)"></div>
+            <div class="thinking-indicator" *ngIf="sending && message.id === messages[messages.length - 1]?.id"><span>Thinking</span><i></i><i></i><i></i></div>
+            <div class="message-actions">
+              <button type="button" title="Copy response" (click)="copyResponse(message)">▣ <span>{{ copiedId === message.id ? 'Copied' : 'Copy' }}</span></button>
+              <button type="button" (click)="edit(message)" *ngIf="editingId !== message.id">Edit</button>
+              <button type="button" (click)="regenerate(message)" [disabled]="sending">↻ Regenerate</button>
+              <button type="button" (click)="delete(message)" *ngIf="isAdmin">Delete</button>
+            </div>
+            <form *ngIf="editingId === message.id" (ngSubmit)="saveEdit(message)" class="edit-form">
+              <textarea [formControl]="form.controls.message" rows="2"></textarea>
+              <button type="submit" [disabled]="sending">Save</button>
+              <button type="button" (click)="cancelEdit()">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="composer-area">
+      <form [formGroup]="form" (ngSubmit)="send()" class="chat-form">
+        <button class="composer-tool" type="button" title="Attach evidence" aria-label="Attach evidence">＋</button>
+        <textarea #composer formControlName="message" rows="1" placeholder="Ask anything about cybersecurity..." aria-label="Message the cybersecurity AI" (keydown)="handleComposerKeydown($event)" (input)="resizeComposer()"></textarea>
+        <button class="composer-tool" type="button" title="AI tools" aria-label="AI tools">✧</button>
+        <button class="composer-tool microphone" type="button" title="Voice input" aria-label="Voice input">♩</button>
+        <button class="send-btn" type="submit" [disabled]="sending || form.invalid" [attr.aria-label]="sending ? 'Sending message' : 'Send message'">{{ sending ? '…' : '↑' }}</button>
       </form>
-    </article>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="send()" class="chat-form">
-    <input formControlName="message" placeholder="Ask the AI assistant..." />
-    <button type="submit" [disabled]="sending">{{ sending ? 'Sending...' : 'Send' }}</button>
-  </form>
+      <p class="composer-hint">Cybersecurity AI can make mistakes. Verify critical findings before taking action.</p>
+    </div>
+  </main>
 </section>
