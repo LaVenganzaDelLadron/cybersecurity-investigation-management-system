@@ -41,7 +41,9 @@ describe('Sidebar', () => {
   it('limits users to self-service navigation', () => {
     const labels = component.visibleItems('user').map((item) => item.label);
 
-    expect(labels).toContain('Report incident');
+    expect(labels).toContain('Incidents');
+    expect(labels).not.toContain('Report incident');
+    expect(component.visibleItems('user').filter((item) => item.route === '/incidents')).toHaveLength(1);
     expect(labels).toContain('AI assistant');
     expect(labels).not.toContain('Investigation notes');
     expect(labels).not.toContain('Categories');

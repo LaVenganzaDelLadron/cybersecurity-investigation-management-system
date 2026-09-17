@@ -26,7 +26,6 @@ export class Sidebar {
   readonly items: SidebarItem[] = [
     { label: 'Dashboard', route: '/dashboard', roles: ['admin', 'analyst', 'user'] },
     { label: 'Incidents', route: '/incidents', roles: ['admin', 'analyst', 'user'] },
-    { label: 'Report incident', route: '/incidents/new', roles: ['admin', 'analyst', 'user'] },
     { label: 'Categories', route: '/categories', roles: ['admin'] },
     { label: 'Investigation notes', route: '/notes', roles: ['admin', 'analyst'] },
     { label: 'Attachments', route: '/attachments', roles: ['admin', 'analyst', 'user'] },
