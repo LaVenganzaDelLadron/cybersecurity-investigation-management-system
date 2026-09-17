@@ -20,3 +20,5 @@ a { color:#7cc6ff; text-decoration:none; margin-right:10px; }
 .page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
 .data-table, .attachment-form, .resource-modal { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); }
 .primary-btn, .attachment-form button:not(.secondary) { background:linear-gradient(135deg,#1677d8,#35d4ed); }
+.attachment-form input[type="file"] { padding:10px; border-style:dashed; cursor:pointer; }
+.selected-file { margin:0; color:#9edcff; font-size:.86rem; }

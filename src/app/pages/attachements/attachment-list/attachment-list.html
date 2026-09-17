@@ -28,9 +28,12 @@
   <header class="form-header"><h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2><button type="button" class="close-btn" aria-label="Close" (click)="cancelEdit()">×</button></header>
   <form [formGroup]="form" (ngSubmit)="save()" class="attachment-form">
     <label>Incident ID <input type="number" formControlName="incident_id" min="1" /></label>
-    <label>Filename <input formControlName="filename" /></label>
-    <label>File path or URL <input formControlName="filepath" /></label>
-    <label>File type <input formControlName="filetype" placeholder="application/pdf" /></label>
+    <label *ngIf="editing">Filename <input formControlName="filename" /></label>
+    <label *ngIf="!editing">File <input #fileInput type="file" (change)="selectFile($event)" /></label>
+    <p class="selected-file" *ngIf="!editing && selectedFile">
+      Selected: <strong>{{ selectedFile.name }}</strong> · {{ selectedFile.type || 'Unknown type' }}
+    </p>
+    <label *ngIf="editing">File type <input formControlName="filetype" placeholder="application/pdf" /></label>
     <div><button type="submit">Save</button><button type="button" class="secondary" (click)="cancelEdit()">Cancel</button></div>
   </form>
 </section></div>

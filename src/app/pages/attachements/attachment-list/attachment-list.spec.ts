@@ -24,4 +24,13 @@ describe('AttachmentList', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('selects a file and uses its metadata for a new upload', () => {
+    const file = new File(['evidence'], 'evidence.txt', { type: 'text/plain' });
+    component.selectFile({ target: { files: [file] } } as unknown as Event);
+
+    expect(component.selectedFile).toBe(file);
+    expect(component.form.controls.filename.value).toBe('evidence.txt');
+    expect(component.form.controls.filetype.value).toBe('text/plain');
+  });
 });

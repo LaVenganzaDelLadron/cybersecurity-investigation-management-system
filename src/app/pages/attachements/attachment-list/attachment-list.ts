@@ -24,7 +24,9 @@ export class AttachmentList {
   readonly canDelete: boolean;
   readonly form;
   @ViewChild('attachmentModal') attachmentModal?: ElementRef<HTMLElement>;
+  @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
   private modalTrigger: HTMLElement | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private readonly attachmentService: AttachmentService,
@@ -58,6 +60,7 @@ export class AttachmentList {
     this.editing = null;
     this.formOpen = true;
     this.form.reset();
+    this.selectedFile = null;
     this.error = '';
     setTimeout(() => this.attachmentModal?.nativeElement.focus());
   }
@@ -72,11 +75,30 @@ export class AttachmentList {
       filepath: attachment.filepath ?? '',
       filetype: attachment.filetype ?? '',
     });
+    this.selectedFile = null;
     this.error = '';
     setTimeout(() => this.attachmentModal?.nativeElement.focus());
   }
 
-  cancelEdit(): void { this.editing = null; this.formOpen = false; this.form.reset(); this.modalTrigger?.focus(); this.modalTrigger = null; }
+  cancelEdit(): void {
+    this.editing = null;
+    this.formOpen = false;
+    this.form.reset();
+    this.selectedFile = null;
+    this.modalTrigger?.focus();
+    this.modalTrigger = null;
+  }
+
+  selectFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files?.[0] ?? null;
+    if (this.selectedFile) {
+      this.form.patchValue({
+        filename: this.selectedFile.name,
+        filetype: this.selectedFile.type || undefined,
+      });
+    }
+  }
 
   @HostListener('document:keydown.escape')
   handleEscape(): void { if (this.formOpen) this.cancelEdit(); }
@@ -93,16 +115,21 @@ export class AttachmentList {
 
   save(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (!this.editing && !this.selectedFile) {
+      this.error = 'Select a file to upload.';
+      return;
+    }
     this.error = '';
     this.success = '';
     const value = this.form.getRawValue();
     const payload = {
       incident_id: value.incident_id ? Number(value.incident_id) : undefined,
       filename: value.filename ?? '',
-      filepath: value.filepath || undefined,
       filetype: value.filetype || undefined,
     };
-    const request = this.editing ? this.attachmentService.update(this.editing.id, payload) : this.attachmentService.create(payload);
+    const request = this.editing
+      ? this.attachmentService.update(this.editing.id, payload)
+      : this.attachmentService.create(this.selectedFile!, payload.incident_id);
     request.subscribe({
       next: (attachment) => {
         this.attachments = this.editing ? this.attachments.map((item) => item.id === attachment.id ? attachment : item) : [attachment, ...this.attachments];

@@ -21,8 +21,13 @@ export class AttachmentService {
     return this.http.get<Attachment>(`${this.baseUrl}/${id}`);
   }
 
-  create(payload: AttachmentPayload): Observable<Attachment> {
-    return this.http.post<Attachment>(this.baseUrl, payload).pipe(tap(() => this.cache.invalidate('attachments')));
+  create(file: File, incidentId?: number): Observable<Attachment> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    if (incidentId) {
+      formData.append('incident_id', String(incidentId));
+    }
+    return this.http.post<Attachment>(this.baseUrl, formData).pipe(tap(() => this.cache.invalidate('attachments')));
   }
 
   update(id: number, payload: Partial<AttachmentPayload>): Observable<Attachment> {
