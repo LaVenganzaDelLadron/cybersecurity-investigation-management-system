@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, SecurityContext, ViewChild } from '@angular/core';
+import { Component, ElementRef, SecurityContext, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -27,7 +27,6 @@ export class ChatAi {
   conversationTitle = 'New cybersecurity conversation';
   copiedId: number | null = null;
   @ViewChild('composer') composer?: ElementRef<HTMLTextAreaElement>;
-  @ViewChild('editModal') editModal?: ElementRef<HTMLElement>;
 
   form;
 
@@ -79,10 +78,6 @@ export class ChatAi {
       : this.messages;
   }
 
-  get editingMessage(): ChatMessage | undefined {
-    return this.messages.find((message) => message.id === this.editingId);
-  }
-
   newChat(): void {
     this.editingId = null;
     this.form.reset();
@@ -120,29 +115,6 @@ export class ChatAi {
       this.composer?.nativeElement.focus();
       this.resizeComposer();
     });
-  }
-
-  @HostListener('document:keydown.escape')
-  handleEscape(): void {
-    if (this.editingId !== null) this.cancelEdit();
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  trapEditModalFocus(event: KeyboardEvent): void {
-    if (this.editingId === null || event.key !== 'Tab' || !this.editModal) return;
-    const elements = Array.from(this.editModal.nativeElement.querySelectorAll<HTMLElement>(
-      'button, textarea, input, select, [tabindex]:not([tabindex="-1"])',
-    ));
-    if (!elements.length) return;
-    const first = elements[0];
-    const last = elements[elements.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
   }
 
   async copyResponse(message: ChatMessage): Promise<void> {
@@ -193,7 +165,6 @@ export class ChatAi {
   edit(message: ChatMessage): void {
     this.editingId = message.id;
     this.form.setValue({ message: message.userinput });
-    setTimeout(() => this.editModal?.nativeElement.focus());
   }
 
   cancelEdit(): void {
