@@ -16,3 +16,9 @@ h1 { margin:8px 0 0; }
 .message-actions button, .edit-form button { padding:5px 10px; }
 .edit-form { display:flex; gap:8px; margin-top:8px; }
 .edit-form input { flex:1; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.chat-window { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); }
+.message { background:rgba(5,15,27,.62); }
+.message.user { border-left-color:#47d7ff; }
+.message.assistant { border-left-color:#4ee0a0; }
+.chat-form button { background:linear-gradient(135deg,#1677d8,#35d4ed); }

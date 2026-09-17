@@ -10,3 +10,6 @@ h1 { margin:8px 0 0; }
 .profile-heading h2 { margin:0 0 4px; }
 .profile-heading span { color:#7cc6ff; font-size:.75rem; letter-spacing:.12em; }
 .avatar { display:grid; place-items:center; width:52px; height:52px; border-radius:50%; background:#2776ad; font-size:1.4rem; font-weight:700; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.profile-card { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); box-shadow:0 24px 70px rgba(0,0,0,.28); }
+.avatar { background:linear-gradient(135deg,#1677d8,#35d4ed); color:#04101d; }

@@ -6,6 +6,7 @@
 .authenticated-shell {
   display: flex;
   min-height: 100vh;
+  background: linear-gradient(90deg, rgba(2, 8, 15, .2), transparent);
 }
 
 .content {
@@ -13,6 +14,30 @@
   flex: 1;
 }
 
+.system-strip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(71, 191, 255, .12);
+  background: rgba(3, 12, 23, .52);
+  color: #6e91b1;
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+.system-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ee0a0;
+  box-shadow: 0 0 12px #4ee0a0;
+}
+.system-strip-spacer { flex: 1; }
+.system-time { color: #47d7ff; }
+
 @media (max-width: 760px) {
   .content { width: 100%; }
+  .system-strip { padding: 0 18px; padding-right: 72px; }
 }

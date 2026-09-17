@@ -7,12 +7,13 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 264px;
   min-height: 100vh;
-  padding: 24px 16px;
+  padding: 22px 14px 16px;
   box-sizing: border-box;
-  background: rgba(6, 17, 31, 0.96);
-  border-right: 1px solid rgba(124, 198, 255, 0.16);
+  background: linear-gradient(180deg, rgba(5, 14, 26, .98), rgba(4, 10, 19, .98));
+  border-right: 1px solid rgba(71, 191, 255, .18);
+  box-shadow: 12px 0 44px rgba(0, 0, 0, .18);
   z-index: 20;
 }
 
@@ -23,7 +24,7 @@
 
 .brand {
   gap: 11px;
-  padding: 0 10px 26px;
+  padding: 0 10px 24px;
 }
 
 .brand-mark, .avatar {
@@ -31,20 +32,21 @@
   place-items: center;
   flex: 0 0 auto;
   border-radius: 10px;
-  background: linear-gradient(135deg, #4b9eff, #67d6ba);
-  color: #06111f;
+  background: linear-gradient(135deg, #47d7ff, #4e8dff);
+  color: #04101d;
   font-weight: 800;
 }
 
 .brand-mark { width: 34px; height: 34px; }
-.brand strong { display: block; letter-spacing: .12em; }
-.brand div span, .user-card span { display: block; color: #86a1c2; font-size: .72rem; }
+.brand strong { display: block; letter-spacing: .16em; }
+.brand div span, .user-card span { display: block; color: #6f91b1; font-size: .68rem; }
 
 .user-card {
   gap: 10px;
   padding: 13px 10px;
   margin-bottom: 20px;
-  border: 1px solid rgba(124, 198, 255, 0.14);
+  border: 1px solid rgba(71, 191, 255, .18);
+  background: rgba(10, 30, 48, .5);
   border-radius: 12px;
 }
 
@@ -54,16 +56,17 @@
 nav { display: grid; gap: 4px; }
 nav a {
   gap: 10px;
-  padding: 10px;
-  border-radius: 9px;
-  color: #afc5e3;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #91acc7;
   text-decoration: none;
   font-size: .88rem;
   transition: background .15s ease, color .15s ease;
 }
-nav a:hover, nav a.active { background: rgba(76, 159, 255, .16); color: #f2f7ff; }
-nav a.active { box-shadow: inset 3px 0 #62b2ff; }
-.nav-dot { width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; }
+nav a:hover { background: rgba(35, 121, 186, .12); color: #e8f4ff; border-color: rgba(71, 191, 255, .12); }
+nav a.active { background: linear-gradient(90deg, rgba(36, 154, 216, .22), rgba(36, 154, 216, .04)); color: #e8f4ff; border-color: rgba(71, 191, 255, .22); box-shadow: inset 3px 0 #47d7ff, 0 0 22px rgba(71, 191, 255, .06); }
+.nav-dot { width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; box-shadow: 0 0 0 3px rgba(71, 191, 255, .06); }
 
 .logout {
   gap: 10px;

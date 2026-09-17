@@ -12,3 +12,7 @@ h1 { margin:8px 0 0; }
 .badge { padding:4px 10px; border-radius:999px; text-transform:capitalize; font-size:0.74rem; }
 .status-active { background:rgba(74,198,134,0.18); color:#9aeeb7; }
 .status-inactive { background:rgba(146,161,180,0.18); color:#dfeafc; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.data-table { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border:1px solid rgba(71,191,255,.15); }
+.primary-btn { background:linear-gradient(135deg,#1677d8,#35d4ed); }
+.resource-modal { background:linear-gradient(145deg,rgba(13,32,50,.98),rgba(5,14,25,.98)); border-color:rgba(71,191,255,.34); }

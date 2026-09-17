@@ -14,3 +14,6 @@ h1 { margin:8px 0 0; }
 .card-actions { margin-top:14px; display:flex; gap:12px; }
 .card-actions a, .card-actions button { color:#7cc6ff; background:none; border:0; padding:0; cursor:pointer; text-decoration:none; font:inherit; }
 .success-box { color:#8de0ad; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.note-card, .resource-modal { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border-color:rgba(71,191,255,.18); }
+.primary-btn { background:linear-gradient(135deg,#1677d8,#35d4ed); }

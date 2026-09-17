@@ -1,3 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+:root {
+  color-scheme: dark;
+  --soc-ink: #050912;
+  --soc-navy: #081321;
+  --soc-surface: rgba(12, 26, 42, .82);
+  --soc-surface-strong: #0d1d30;
+  --soc-line: rgba(115, 178, 226, .18);
+  --soc-line-strong: rgba(71, 191, 255, .42);
+  --soc-text: #e8f4ff;
+  --soc-muted: #89a6c2;
+  --soc-cyan: #47d7ff;
+  --soc-blue: #4e8dff;
+  --soc-green: #4ee0a0;
+  --soc-amber: #ffc65c;
+  --soc-red: #ff687c;
+  --soc-radius: 16px;
+  --soc-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; background: var(--soc-ink); }
+body {
+  color: var(--soc-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(40, 128, 211, .18), transparent 30rem),
+    radial-gradient(circle at 90% 10%, rgba(35, 215, 255, .08), transparent 26rem),
+    linear-gradient(145deg, #050912 0%, #071321 52%, #091b2a 100%);
+}
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--soc-cyan);
+  outline-offset: 3px;
+}
+.page-shell {
+  position: relative;
+  isolation: isolate;
+}
+.page-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .22;
+  background-image:
+    linear-gradient(rgba(74, 153, 201, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 153, 201, .08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+  content: "";
+}
+.page-shell :is(.data-table, .panel, .form-shell, .auth-card, .chat-window, .profile-card) {
+  box-shadow: var(--soc-shadow);
+}
+.page-shell :is(input, select, textarea) {
+  width: 100%;
+  border: 1px solid var(--soc-line);
+  border-radius: 11px;
+  background: rgba(3, 10, 19, .68);
+  color: var(--soc-text);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.page-shell :is(input, select, textarea):focus {
+  border-color: var(--soc-cyan);
+  background: rgba(7, 25, 42, .9);
+  box-shadow: 0 0 0 3px rgba(71, 215, 255, .12);
+  outline: 0;
+}
+.page-shell :is(button, .primary-btn, .secondary-btn, .link-button) {
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.page-shell :is(button, .primary-btn, .secondary-btn):hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(20, 145, 224, .2);
+}
+.error-box { border-radius: 11px; }

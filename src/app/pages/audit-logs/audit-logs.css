@@ -9,3 +9,6 @@ h1 { margin:8px 0 0; }
 .data-table th { color:#9fb9dd; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; }
 :host { display:block; }
 .filter-input { width:100%; max-width:480px; margin:0 0 18px; padding:10px 12px; border-radius:8px; border:1px solid rgba(120,150,180,.35); background:rgba(14,25,35,.8); color:inherit; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.data-table { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border:1px solid rgba(71,191,255,.15); }
+.filter-input { border-color:rgba(71,191,255,.22); background:rgba(2,10,18,.68); }

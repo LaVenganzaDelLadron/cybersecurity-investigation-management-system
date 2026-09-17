@@ -15,3 +15,8 @@ h1 { margin:8px 0 0; }
 .data-table th, .data-table td { text-align:left; padding:12px 14px; border-bottom:1px solid rgba(120,150,180,0.18); }
 .data-table th { color:#9fb9dd; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; }
 a { color:#7cc6ff; text-decoration:none; margin-right:10px; }
+.page-shell { max-width:1480px; margin:0 auto; padding:42px clamp(20px,4vw,58px); }
+.data-table { background:linear-gradient(145deg,rgba(13,32,50,.9),rgba(7,18,30,.88)); border:1px solid rgba(71,191,255,.15); }
+.data-table th { color:#89c9e8; }
+.primary-btn { background:linear-gradient(135deg,#1677d8,#35d4ed); }
+.category-modal { background:linear-gradient(145deg,rgba(13,32,50,.98),rgba(5,14,25,.98)); border-color:rgba(71,191,255,.34); }
