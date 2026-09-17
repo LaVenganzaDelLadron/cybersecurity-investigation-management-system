@@ -16,6 +16,7 @@
   --soc-amber: #ffc65c;
   --soc-red: #ff687c;
   --soc-radius: 16px;
+  --soc-card-radius: 16px;
   --soc-shadow: 0 24px 70px rgba(0, 0, 0, .32);
 }
 
@@ -55,6 +56,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .page-shell :is(.data-table, .panel, .form-shell, .auth-card, .chat-window, .profile-card) {
   box-shadow: var(--soc-shadow);
 }
+.page-shell :is(
+  .data-table,
+  .panel,
+  .stat-card,
+  .data-card,
+  .detail-card,
+  .note-card,
+  .profile-card,
+  .chat-window,
+  .attachment-form,
+  .resource-modal,
+  .category-modal,
+  form:not(.chat-form):not(.edit-form)
+) {
+  border-radius: var(--soc-card-radius);
+}
+.auth-card { border-radius: var(--soc-card-radius); }
 .page-shell :is(input, select, textarea) {
   width: 100%;
   border: 1px solid var(--soc-line);
@@ -77,3 +95,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 8px 24px rgba(20, 145, 224, .2);
 }
 .error-box { border-radius: 11px; }
+@media (max-width: 560px) {
+  .page-shell :is(.resource-modal, .category-modal) {
+    border-radius: var(--soc-card-radius) var(--soc-card-radius) 0 0;
+  }
+}
