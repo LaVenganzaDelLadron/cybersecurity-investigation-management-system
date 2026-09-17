@@ -1,4 +1,5 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -29,6 +30,7 @@ export class IncidentDetails implements OnInit {
     private readonly incidentService: IncidentService,
     authService: AuthService,
     private readonly router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: object,
   ) {
     this.route = route;
     this.isAdmin = authService.hasRole('admin');
@@ -37,6 +39,7 @@ export class IncidentDetails implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!Number.isInteger(id) || id < 1) {
       this.error = 'The incident ID is invalid.';
