@@ -5,7 +5,7 @@
 .eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
 h1 { margin:8px 0 0; }
 .detail-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); }
-.panel { background: rgba(14,25,35,0.9); border-radius:16px; padding:20px; border:1px solid rgba(120,150,180,0.18); }
+.panel { background: rgba(14,25,35,0.9); border-radius:0; padding:20px; border:1px solid rgba(120,150,180,0.18); }
 ul { list-style:none; padding:0; display:grid; gap:8px; }
 .badge { padding:4px 10px; border-radius:999px; text-transform:capitalize; font-size:0.74rem; }
 .status-new { background:rgba(72,157,255,0.18); color:#90d0ff; }
