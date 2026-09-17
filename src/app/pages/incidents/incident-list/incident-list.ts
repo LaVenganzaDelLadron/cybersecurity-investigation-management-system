@@ -6,6 +6,7 @@ import { EditIncident } from '../edit-incident/edit-incident';
 import { IncidentService } from '../../../core/services/incident.service';
 import { Incident } from '../../../core/models/incident.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-incident-list',
@@ -71,13 +72,13 @@ export class IncidentList {
 
   loadIncidents(): void {
     this.loading = true;
-    this.incidentService.list().subscribe({
+    this.incidentService.list().pipe(
+      finalize(() => (this.loading = false)),
+    ).subscribe({
       next: (incidents) => (this.incidents = incidents),
       error: () => {
         this.error = 'Unable to load incidents.';
-        this.loading = false;
       },
-      complete: () => (this.loading = false),
     });
   }
 
