@@ -19,8 +19,10 @@
     <article class="record-card" *ngFor="let incident of incidents">
       <span class="record-icon" aria-hidden="true">I</span>
       <h2>{{ incident.title }}</h2>
-      <span class="record-subtitle">{{ incident.location || 'Security incident case' }}</span>
+      <span class="record-subtitle">{{ incident.description || 'No description provided.' }}</span>
       <div class="record-meta">
+        <span>Category: {{ incident.category_id ? '#' + incident.category_id : 'Unassigned' }}</span>
+        <span>Location: {{ incident.location || 'Not provided' }}</span>
         <span><strong>Status:</strong> <span class="badge status-{{ incident.status }}">{{ incident.status }}</span></span>
         <span><strong>Severity:</strong> <span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></span>
       </div>
