@@ -73,11 +73,6 @@
               <button type="button" (click)="regenerate(message)" [disabled]="sending">↻ Regenerate</button>
               <button type="button" (click)="delete(message)" *ngIf="isAdmin">Delete</button>
             </div>
-            <form *ngIf="editingId === message.id" (ngSubmit)="saveEdit(message)" class="edit-form">
-              <textarea [formControl]="form.controls.message" rows="2"></textarea>
-              <button type="submit" [disabled]="sending">Save</button>
-              <button type="button" (click)="cancelEdit()">Cancel</button>
-            </form>
           </div>
         </div>
       </article>
@@ -95,3 +90,23 @@
     </div>
   </main>
 </section>
+
+<div class="chat-modal-backdrop" *ngIf="editingId !== null" (click)="cancelEdit()">
+  <section #editModal class="chat-edit-modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="edit-chat-title" (click)="$event.stopPropagation()">
+    <header class="chat-edit-header">
+      <div>
+        <span class="chat-modal-eyebrow">Conversation update</span>
+        <h2 id="edit-chat-title">Edit your message</h2>
+      </div>
+      <button type="button" class="icon-btn" aria-label="Close edit message dialog" (click)="cancelEdit()">×</button>
+    </header>
+    <p class="chat-modal-help">Update the prompt and submit it to regenerate the assistant response.</p>
+    <form *ngIf="editingMessage as message" [formGroup]="form" (ngSubmit)="saveEdit(message)" class="chat-edit-form">
+      <textarea formControlName="message" rows="6" aria-label="Message to edit"></textarea>
+      <div class="chat-edit-actions">
+        <button type="button" (click)="cancelEdit()" [disabled]="sending">Cancel</button>
+        <button type="submit" [disabled]="sending || form.invalid">{{ sending ? 'Updating...' : 'Update message' }}</button>
+      </div>
+    </form>
+  </section>
+</div>
