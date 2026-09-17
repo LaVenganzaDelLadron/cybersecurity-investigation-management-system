@@ -5,8 +5,10 @@ import { CreateIncident } from '../create-incident/create-incident';
 import { EditIncident } from '../edit-incident/edit-incident';
 import { IncidentService } from '../../../core/services/incident.service';
 import { Incident } from '../../../core/models/incident.model';
+import { CategoryService } from '../../../core/services/category.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { finalize } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-incident-list',
@@ -17,6 +19,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class IncidentList {
   incidents: Incident[] = [];
+  categories: { id: number; name: string }[] = [];
   loading = true;
   error = '';
   readonly isAdmin: boolean;
@@ -31,6 +34,7 @@ export class IncidentList {
 
   constructor(
     private readonly incidentService: IncidentService,
+    private readonly categoryService: CategoryService,
     authService: AuthService,
   ) {
     this.isAdmin = authService.hasRole('admin');
@@ -98,6 +102,10 @@ export class IncidentList {
 
   loadIncidents(): void {
     this.loading = true;
+    this.error = '';
+    this.categoryService.list().pipe(
+      catchError(() => of([])),
+    ).subscribe((categories) => (this.categories = categories));
     this.incidentService.list().pipe(
       finalize(() => (this.loading = false)),
     ).subscribe({
@@ -106,6 +114,11 @@ export class IncidentList {
         this.error = 'Unable to load incidents.';
       },
     });
+  }
+
+  categoryName(categoryId?: number): string {
+    if (!categoryId) return 'Unassigned';
+    return this.categories.find((category) => category.id === categoryId)?.name ?? 'Category unavailable';
   }
 
   deleteIncident(incident: Incident): void {
