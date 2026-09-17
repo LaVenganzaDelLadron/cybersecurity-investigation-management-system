@@ -5,9 +5,7 @@
       <h1>Investigation copilot</h1>
     </div>
   </header>
-  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
-  <div id="page-content">
   <p *ngIf="loading">Loading conversation...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <div class="chat-window">
@@ -39,5 +37,4 @@
     <input formControlName="message" placeholder="Ask the AI assistant..." />
     <button type="submit" [disabled]="sending">{{ sending ? 'Sending...' : 'Send' }}</button>
   </form>
-  </div>
 </section>

@@ -7,12 +7,11 @@ import { IncidentService } from '../../../core/services/incident.service';
 import { Incident } from '../../../core/models/incident.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { finalize } from 'rxjs/operators';
-import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-incident-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, CreateIncident, EditIncident, SummaryCards],
+  imports: [CommonModule, RouterLink, CreateIncident, EditIncident],
   styleUrl: './incident-list.css',
   templateUrl: './incident-list.html',
 })
@@ -37,14 +36,6 @@ export class IncidentList {
     this.isAdmin = authService.hasRole('admin');
     this.canEdit = authService.hasRole(['admin', 'analyst']);
     this.loadIncidents();
-  }
-
-  get summaryCards(): SummaryCard[] {
-    return [
-      { icon: 'I', title: 'Incidents', description: 'Cases visible to your role', value: this.incidents.length, target: '#page-content' },
-      { icon: 'O', title: 'Open cases', description: 'Incidents requiring action', value: this.incidents.filter((item) => !['resolved', 'closed'].includes(item.status.toLowerCase())).length, tone: 'warning', target: '#page-content' },
-      { icon: '!', title: 'Critical alerts', description: 'Highest-priority security cases', value: this.incidents.filter((item) => item.severity.toLowerCase() === 'critical').length, tone: 'danger', target: '#page-content' },
-    ];
   }
 
   openCreate(event?: Event): void {

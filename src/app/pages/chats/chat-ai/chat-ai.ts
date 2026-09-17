@@ -6,12 +6,11 @@ import { ChatMessage } from '../../../core/models/chat.model';
 import { ChatService } from '../../../core/services/chat.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { marked } from 'marked';
-import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-chat-ai',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SummaryCards],
+  imports: [CommonModule, ReactiveFormsModule],
   styleUrl: './chat-ai.css',
   templateUrl: './chat-ai.html',
 })
@@ -36,13 +35,6 @@ export class ChatAi {
     });
     this.isAdmin = this.authService.hasRole('admin');
     this.loadHistory();
-  }
-
-  get summaryCards(): SummaryCard[] {
-    return [
-      { icon: 'A', title: 'AI conversations', description: 'Assistant conversations', value: this.messages.length, target: '#page-content' },
-      { icon: 'Q', title: 'Questions', description: 'Investigation prompts submitted', value: this.messages.length, tone: 'success', target: '#page-content' },
-    ];
   }
 
   renderAssistantMessage(response: string | null | undefined): string {

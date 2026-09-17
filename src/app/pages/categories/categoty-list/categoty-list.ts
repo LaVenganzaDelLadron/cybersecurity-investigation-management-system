@@ -5,12 +5,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Category } from '../../../core/models/category.model';
 import { CategoryService } from '../../../core/services/category.service';
 import { CategotyForm } from '../categoty-form/categoty-form';
-import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-categoty-list',
   standalone: true,
-  imports: [CommonModule, CategotyForm, SummaryCards],
+  imports: [CommonModule, CategotyForm],
   styleUrl: './categoty-list.css',
   templateUrl: './categoty-list.html',
 })
@@ -33,13 +32,6 @@ export class CategotyList {
   ) {
     this.canManage = this.authService.hasRole('admin');
     this.load();
-  }
-
-  get summaryCards(): SummaryCard[] {
-    return [
-      { icon: 'C', title: 'Categories', description: 'Incident classification groups', value: this.categories.length, target: '#page-content' },
-      { icon: 'A', title: 'Active groups', description: 'Available classification options', value: this.categories.length, tone: 'success', target: '#page-content' },
-    ];
   }
 
   load(): void {

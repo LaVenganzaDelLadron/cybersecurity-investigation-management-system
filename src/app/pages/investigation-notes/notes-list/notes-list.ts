@@ -5,12 +5,11 @@ import { InvestigationNoteService } from '../../../core/services/investigation-n
 import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { NotesForm } from '../notes-form/notes-form';
-import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-notes-list',
   standalone: true,
-  imports: [CommonModule, NotesForm, SummaryCards],
+  imports: [CommonModule, NotesForm],
   styleUrl: './notes-list.css',
   templateUrl: './notes-list.html',
 })
@@ -35,13 +34,6 @@ export class NotesList {
     this.canDelete = authService.hasRole('admin');
     const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
     this.load(incidentId);
-  }
-
-  get summaryCards(): SummaryCard[] {
-    return [
-      { icon: 'N', title: 'Investigation notes', description: 'Analyst findings and recommendations', value: this.notes.length, target: '#page-content' },
-      { icon: 'R', title: 'Recommendations', description: 'Notes containing next steps', value: this.notes.filter((note) => !!note.recommendation).length, tone: 'warning', target: '#page-content' },
-    ];
   }
 
   openModal(id: number | null): void {

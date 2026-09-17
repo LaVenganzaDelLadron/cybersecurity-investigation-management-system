@@ -6,9 +6,7 @@
     </div>
     <button class="primary-btn" *ngIf="canManage" (click)="create()">New user</button>
   </header>
-  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
-  <div id="page-content">
   <p *ngIf="loading">Loading users...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="error-box" *ngIf="actionError">{{ actionError }}</p>
@@ -26,6 +24,5 @@
     </tbody>
   </table>
   <p *ngIf="!loading && !users.length">No users found.</p>
-  </div>
 </section>
 <div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"><section #userModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="User form" (click)="$event.stopPropagation()"><app-user-form [modal]="true" [userId]="editingId" (saved)="closeModal(); load()" (cancelled)="closeModal()"></app-user-form></section></div>

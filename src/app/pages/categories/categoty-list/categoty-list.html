@@ -6,9 +6,7 @@
     </div>
     <button class="primary-btn" *ngIf="canManage" (click)="create()">New category</button>
   </header>
-  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
-  <div id="page-content">
   <p *ngIf="loading">Loading categories...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="error-box" *ngIf="actionError">{{ actionError }}</p>
@@ -26,7 +24,6 @@
     </tbody>
   </table>
   <p *ngIf="!loading && !categories.length">No categories found.</p>
-  </div>
 </section>
 
 <div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()">

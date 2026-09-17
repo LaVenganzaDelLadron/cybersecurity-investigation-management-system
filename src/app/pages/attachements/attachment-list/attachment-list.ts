@@ -5,12 +5,11 @@ import { Attachment } from '../../../core/models/attachment.model';
 import { AttachmentService } from '../../../core/services/attachment.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-attachment-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SummaryCards],
+  imports: [CommonModule, ReactiveFormsModule],
   styleUrl: './attachment-list.css',
   templateUrl: './attachment-list.html',
 })
@@ -45,13 +44,6 @@ export class AttachmentList {
     });
     const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
     this.load(incidentId);
-  }
-
-  get summaryCards(): SummaryCard[] {
-    return [
-      { icon: 'A', title: 'Attachments', description: 'Evidence metadata records', value: this.attachments.length, target: '#page-content' },
-      { icon: 'E', title: 'Evidence files', description: 'Files linked to incidents', value: this.attachments.filter((item) => !!item.incident_id).length, tone: 'success', target: '#page-content' },
-    ];
   }
 
   load(incidentId?: number): void {
