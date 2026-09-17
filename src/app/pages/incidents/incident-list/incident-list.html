@@ -30,7 +30,7 @@
         <td><span class="badge status-{{ incident.status }}">{{ incident.status }}</span></td>
         <td><span class="badge severity-{{ incident.severity }}">{{ incident.severity }}</span></td>
         <td>
-          <a [routerLink]="['/incidents', incident.id]">View</a>
+          <a [routerLink]="viewRoute(incident.id)" (click)="openView(incident.id, $event)">View</a>
           <a *ngIf="canEdit" href="/incidents/{{ incident.id }}/edit" (click)="openEdit(incident.id, $event)">Edit</a>
           <button *ngIf="isAdmin" type="button" (click)="deleteIncident(incident)">Delete</button>
         </td>
@@ -40,7 +40,22 @@
 </section>
 
 <div class="modal-backdrop" *ngIf="modal" (click)="closeModal()">
-  <section #incidentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Incident form" (click)="$event.stopPropagation()">
+  <section #incidentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" [attr.aria-label]="modal === 'view' ? 'Incident details' : 'Incident form'" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="modal === 'view'">
+      <header class="modal-header"><div><span class="eyebrow">Incident details</span><h2>{{ selectedIncident?.title || 'Loading incident' }}</h2></div><button type="button" class="close-btn" aria-label="Close incident details" (click)="closeModal()">×</button></header>
+      <p *ngIf="viewLoading" class="muted">Loading incident details...</p>
+      <p *ngIf="viewError" class="error-box">{{ viewError }}</p>
+      <ng-container *ngIf="selectedIncident as detail">
+        <div class="detail-grid">
+          <article class="detail-card"><span>Status</span><strong class="badge status-{{ detail.status }}">{{ detail.status }}</strong></article>
+          <article class="detail-card"><span>Severity</span><strong class="badge severity-{{ detail.severity }}">{{ detail.severity }}</strong></article>
+          <article class="detail-card"><span>Incident ID</span><strong>#{{ detail.id }}</strong></article>
+          <article class="detail-card"><span>Category</span><strong>{{ detail.category_id ? '#' + detail.category_id : 'Unassigned' }}</strong></article>
+        </div>
+        <div class="detail-copy"><h3>Description</h3><p>{{ detail.description || 'No description provided.' }}</p><h3>Location</h3><p>{{ detail.location || 'Not provided.' }}</p><h3>Incident date</h3><p>{{ detail.incident_date ? (detail.incident_date | date:'medium') : 'Not provided.' }}</p></div>
+        <footer class="modal-footer"><a [routerLink]="viewRoute(detail.id)" (click)="closeModal()">Open full page <span>→</span></a></footer>
+      </ng-container>
+    </ng-container>
     <app-create-incident *ngIf="modal === 'create'" [modal]="true" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-create-incident>
     <app-edit-incident *ngIf="modal === 'edit'" [modal]="true" [incidentIdInput]="editingId" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-edit-incident>
   </section>

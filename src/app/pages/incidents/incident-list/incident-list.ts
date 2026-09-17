@@ -21,8 +21,11 @@ export class IncidentList {
   error = '';
   readonly isAdmin: boolean;
   readonly canEdit: boolean;
-  modal: 'create' | 'edit' | null = null;
+  modal: 'view' | 'create' | 'edit' | null = null;
   editingId: number | null = null;
+  selectedIncident: Incident | null = null;
+  viewLoading = false;
+  viewError = '';
   @ViewChild('incidentModal') incidentModal?: ElementRef<HTMLElement>;
   private modalTrigger: HTMLElement | null = null;
 
@@ -42,6 +45,26 @@ export class IncidentList {
     setTimeout(() => this.incidentModal?.nativeElement.focus());
   }
 
+  openView(id: number, event?: Event): void {
+    event?.preventDefault();
+    this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    this.modal = 'view';
+    this.selectedIncident = null;
+    this.viewLoading = true;
+    this.viewError = '';
+    setTimeout(() => this.incidentModal?.nativeElement.focus());
+    this.incidentService.get(id).pipe(
+      finalize(() => (this.viewLoading = false)),
+    ).subscribe({
+      next: (incident) => (this.selectedIncident = incident),
+      error: (error) => {
+        this.viewError = error?.name === 'TimeoutError'
+          ? 'The incident request timed out. Please try again.'
+          : 'Unable to load the incident details.';
+      },
+    });
+  }
+
   openEdit(id: number, event?: Event): void {
     event?.preventDefault();
     this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -53,6 +76,9 @@ export class IncidentList {
   closeModal(): void {
     this.modal = null;
     this.editingId = null;
+    this.selectedIncident = null;
+    this.viewLoading = false;
+    this.viewError = '';
     this.modalTrigger?.focus();
     this.modalTrigger = null;
   }
@@ -90,5 +116,9 @@ export class IncidentList {
       next: () => (this.incidents = this.incidents.filter((item) => item.id !== incident.id)),
       error: () => (this.error = 'Unable to delete the incident.'),
     });
+  }
+
+  viewRoute(id: number): string[] {
+    return ['/incidents', String(id)];
   }
 }
