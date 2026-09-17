@@ -6,8 +6,9 @@
     </div>
     <button class="primary-btn" type="button" (click)="openCreate()">Report incident</button>
   </header>
+  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
-  <div class="toolbar">
+  <div class="toolbar" id="page-content">
     <button type="button" (click)="loadIncidents()">Refresh</button>
   </div>
 

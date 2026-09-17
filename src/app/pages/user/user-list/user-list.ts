@@ -5,11 +5,12 @@ import { UserSummary } from '../../../core/models/user.model';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserForm } from '../user-form/user-form';
+import { SummaryCard, SummaryCards } from '../../../shared/summary-cards/summary-cards';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, UserForm],
+  imports: [CommonModule, UserForm, SummaryCards],
   styleUrl: './user-list.css',
   templateUrl: './user-list.html',
 })
@@ -32,6 +33,14 @@ export class UserList {
   ) {
     this.canManage = this.authService.hasRole('admin');
     this.load();
+  }
+
+  get summaryCards(): SummaryCard[] {
+    return [
+      { icon: 'U', title: 'Users', description: 'Accounts managed by administrators', value: this.users.length, target: '#page-content' },
+      { icon: 'A', title: 'Administrators', description: 'Accounts with admin privileges', value: this.users.filter((user) => user.role === 'admin').length, tone: 'danger', target: '#page-content' },
+      { icon: 'O', title: 'Active users', description: 'Accounts ready for operations', value: this.users.filter((user) => user.status === 'active').length, tone: 'success', target: '#page-content' },
+    ];
   }
 
   load(): void {

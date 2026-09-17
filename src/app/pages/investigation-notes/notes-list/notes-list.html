@@ -6,7 +6,9 @@
     </div>
     <button class="primary-btn" *ngIf="canManage" type="button" (click)="openModal(null)">Add note</button>
   </header>
+  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
+  <div id="page-content">
   <p *ngIf="loading">Loading notes...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="success-box" *ngIf="success">{{ success }}</p>
@@ -18,6 +20,7 @@
       <footer><span>Incident #{{ note.incident_id }}</span><span *ngIf="note.recommendation">{{ note.recommendation }}</span><span *ngIf="note.created_at">{{ note.created_at | date:'medium' }}</span></footer>
       <div class="card-actions" *ngIf="canManage || canDelete"><a *ngIf="canManage" href="/notes/{{ note.id }}/edit" (click)="openModal(note.id); $event.preventDefault()">Edit</a><button *ngIf="canDelete" type="button" (click)="deleteNote(note)">Delete</button></div>
     </article>
+  </div>
   </div>
 </section>
 <div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"><section #noteModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Investigation note form" (click)="$event.stopPropagation()"><app-notes-form [modal]="true" [noteIdInput]="editingId" (saved)="closeModal(); load()" (cancelled)="closeModal()"></app-notes-form></section></div>

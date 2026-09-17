@@ -6,7 +6,9 @@
     </div>
     <button class="primary-btn" *ngIf="canManage" (click)="startCreate()">Add attachment</button>
   </header>
+  <app-summary-cards [cards]="summaryCards"></app-summary-cards>
 
+  <div id="page-content">
   <p *ngIf="loading">Loading attachments...</p>
   <p class="error-box" *ngIf="error">{{ error }}</p>
   <p class="success-box" *ngIf="success">{{ success }}</p>
@@ -23,6 +25,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </section>
 <div class="modal-backdrop" *ngIf="canManage && formOpen" (click)="cancelEdit()"><section #attachmentModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="Attachment form" (click)="$event.stopPropagation()">
   <header class="form-header"><h2>{{ editing ? 'Edit attachment' : 'Add attachment' }}</h2><button type="button" class="close-btn" aria-label="Close" (click)="cancelEdit()">×</button></header>
