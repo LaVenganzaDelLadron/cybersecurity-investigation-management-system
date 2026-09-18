@@ -34,10 +34,10 @@ export class UserList {
     this.load();
   }
 
-  load(): void {
+  load(refresh = false): void {
     this.loading = true;
     this.error = '';
-    this.userService.list().subscribe({
+    this.userService.list(refresh).subscribe({
       next: (users) => (this.users = users),
       error: () => {
         this.error = 'Unable to load users.';

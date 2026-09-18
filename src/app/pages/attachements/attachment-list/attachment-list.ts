@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AttachmentList {
   attachments: Attachment[] = [];
   loading = true;
+  saving = false;
   error = '';
   success = '';
   editing: Attachment | null = null;
@@ -27,6 +28,7 @@ export class AttachmentList {
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
   private modalTrigger: HTMLElement | null = null;
   selectedFile: File | null = null;
+  private readonly incidentId?: number;
 
   constructor(
     private readonly attachmentService: AttachmentService,
@@ -42,8 +44,8 @@ export class AttachmentList {
       filepath: [''],
       filetype: [''],
     });
-    const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
-    this.load(incidentId);
+    this.incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
+    this.load(this.incidentId);
   }
 
   load(incidentId?: number): void {
@@ -59,7 +61,7 @@ export class AttachmentList {
     this.modalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.editing = null;
     this.formOpen = true;
-    this.form.reset();
+    this.form.reset({ incident_id: this.incidentId ?? null });
     this.selectedFile = null;
     this.error = '';
     setTimeout(() => this.attachmentModal?.nativeElement.focus());
@@ -114,13 +116,14 @@ export class AttachmentList {
   }
 
   save(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid || this.saving) { this.form.markAllAsTouched(); return; }
     if (!this.editing && !this.selectedFile) {
       this.error = 'Select a file to upload.';
       return;
     }
     this.error = '';
     this.success = '';
+    this.saving = true;
     const value = this.form.getRawValue();
     const payload = {
       incident_id: value.incident_id ? Number(value.incident_id) : undefined,
@@ -134,9 +137,13 @@ export class AttachmentList {
       next: (attachment) => {
         this.attachments = this.editing ? this.attachments.map((item) => item.id === attachment.id ? attachment : item) : [attachment, ...this.attachments];
         this.success = this.editing ? 'Attachment updated successfully.' : 'Attachment created successfully.';
+        this.saving = false;
         this.cancelEdit();
       },
-      error: () => (this.error = 'Unable to save the attachment.'),
+      error: () => {
+        this.error = 'Unable to save the attachment.';
+        this.saving = false;
+      },
     });
   }
 

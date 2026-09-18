@@ -96,9 +96,9 @@ export class IncidentList {
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
 
-  loadIncidents(): void {
+  loadIncidents(refresh = false): void {
     this.loading = true;
-    this.incidentService.list().pipe(
+    this.incidentService.list(refresh).pipe(
       finalize(() => (this.loading = false)),
     ).subscribe({
       next: (incidents) => (this.incidents = incidents),

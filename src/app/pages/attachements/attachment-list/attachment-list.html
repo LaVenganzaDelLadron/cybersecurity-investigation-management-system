@@ -37,6 +37,6 @@
       Selected: <strong>{{ selectedFile.name }}</strong> · {{ selectedFile.type || 'Unknown type' }}
     </p>
     <label *ngIf="editing">File type <input formControlName="filetype" placeholder="application/pdf" /></label>
-    <div><button type="submit">Save</button><button type="button" class="secondary" (click)="cancelEdit()">Cancel</button></div>
+    <div><button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button><button type="button" class="secondary" (click)="cancelEdit()" [disabled]="saving">Cancel</button></div>
   </form>
 </section></div>

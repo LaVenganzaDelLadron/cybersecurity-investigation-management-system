@@ -10,7 +10,7 @@
     <span class="badge severity-{{ currentIncident.severity }}">{{ currentIncident.severity }}</span>
   </header>
   <div class="toolbar">
-    <a *ngIf="canEdit" [routerLink]="['/incidents', currentIncident.id, 'edit']">Edit incident</a>
+    <button *ngIf="canEdit" type="button" (click)="openEdit()">Edit incident</button>
     <a *ngIf="canInvestigate" [routerLink]="['/notes']" [queryParams]="{ incident_id: currentIncident.id }">Investigation notes</a>
     <a [routerLink]="['/attachments']" [queryParams]="{ incident_id: currentIncident.id }">Attachments</a>
     <button *ngIf="isAdmin" type="button" (click)="deleteIncident()">Delete incident</button>
@@ -29,3 +29,13 @@
   </div>
   </ng-container>
 </section>
+<div class="modal-backdrop" *ngIf="editOpen" (click)="closeEdit()">
+  <section #editModal class="resource-modal resource-modal--wide" tabindex="-1" role="dialog" aria-modal="true" aria-label="Edit incident" (click)="$event.stopPropagation()">
+    <app-edit-incident
+      [modal]="true"
+      [incidentIdInput]="incident?.id ?? null"
+      (saved)="closeEdit(); refreshIncident()"
+      (cancelled)="closeEdit()"
+    ></app-edit-incident>
+  </section>
+</div>

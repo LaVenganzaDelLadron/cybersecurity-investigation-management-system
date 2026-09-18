@@ -22,6 +22,7 @@ export class NotesList {
   readonly canDelete: boolean;
   modalOpen = false;
   editingId: number | null = null;
+  readonly incidentId?: number;
   @ViewChild('noteModal') noteModal?: ElementRef<HTMLElement>;
   private modalTrigger: HTMLElement | null = null;
 
@@ -32,8 +33,8 @@ export class NotesList {
   ) {
     this.canManage = authService.hasRole(['admin', 'analyst']);
     this.canDelete = authService.hasRole('admin');
-    const incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
-    this.load(incidentId);
+    this.incidentId = Number(route.snapshot.queryParamMap.get('incident_id')) || undefined;
+    this.load(this.incidentId);
   }
 
   openModal(id: number | null): void {
@@ -59,9 +60,9 @@ export class NotesList {
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
 
-  load(incidentId?: number): void {
+  load(incidentId?: number, refresh = false): void {
     this.loading = true;
-    this.noteService.list(incidentId).subscribe({
+    this.noteService.list(incidentId, refresh).subscribe({
       next: (notes) => (this.notes = notes),
       error: () => { this.error = 'Unable to load investigation notes.'; this.loading = false; },
       complete: () => (this.loading = false),

@@ -51,7 +51,7 @@
         <footer class="modal-footer"><a [routerLink]="viewRoute(detail.id)" (click)="closeModal()">Open full page <span>→</span></a></footer>
       </ng-container>
     </ng-container>
-    <app-create-incident *ngIf="modal === 'create'" [modal]="true" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-create-incident>
-    <app-edit-incident *ngIf="modal === 'edit'" [modal]="true" [incidentIdInput]="editingId" (saved)="closeModal(); loadIncidents()" (cancelled)="closeModal()"></app-edit-incident>
+    <app-create-incident *ngIf="modal === 'create'" [modal]="true" (saved)="closeModal(); loadIncidents(true)" (cancelled)="closeModal()"></app-create-incident>
+    <app-edit-incident *ngIf="modal === 'edit'" [modal]="true" [incidentIdInput]="editingId" (saved)="closeModal(); loadIncidents(true)" (cancelled)="closeModal()"></app-edit-incident>
   </section>
 </div>

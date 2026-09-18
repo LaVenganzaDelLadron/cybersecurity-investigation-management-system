@@ -34,10 +34,10 @@ export class CategotyList {
     this.load();
   }
 
-  load(): void {
+  load(refresh = false): void {
     this.loading = true;
     this.error = '';
-    this.categoryService.list().subscribe({
+    this.categoryService.list(refresh).subscribe({
       next: (categories) => (this.categories = categories),
       error: () => {
         this.error = 'Unable to load categories.';
@@ -94,7 +94,7 @@ export class CategotyList {
 
   refreshAfterSave(): void {
     this.closeModal();
-    this.load();
+    this.load(true);
   }
 
   remove(category: Category): void {

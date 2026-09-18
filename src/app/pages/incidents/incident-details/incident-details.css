@@ -4,7 +4,9 @@
 .page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
 .eyebrow { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#7cc6ff; }
 h1 { margin:8px 0 0; }
-.detail-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); }
+detail-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); }
+.toolbar button { border:1px solid rgba(71,215,255,.2); border-radius:9px; background:rgba(71,215,255,.08); color:#dff7ff; padding:9px 12px; cursor:pointer; }
+.toolbar button:hover { border-color:#47d7ff; background:rgba(71,215,255,.14); }
 .panel { background: rgba(14,25,35,0.9); border-radius:0; padding:20px; border:1px solid rgba(120,150,180,0.18); }
 ul { list-style:none; padding:0; display:grid; gap:8px; }
 .badge { padding:4px 10px; border-radius:999px; text-transform:capitalize; font-size:0.74rem; }

@@ -80,6 +80,46 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .page-shell :is(.panel, .stat-card, .data-card, .detail-card, .note-card, .profile-card, .chat-window, .attachment-form, .resource-modal, .category-modal) {
   padding: var(--soc-card-padding);
 }
+.modal-backdrop { animation: soc-modal-in .18s ease both; }
+.resource-modal,
+.category-modal {
+  position: relative;
+  border: 1px solid var(--soc-line-strong);
+  background: linear-gradient(145deg, rgba(13, 32, 50, .98), rgba(5, 14, 25, .98));
+}
+.resource-modal--wide { width: min(760px, 100%); }
+.resource-modal .form-header,
+.category-modal .form-header { padding-bottom: 16px; border-bottom: 1px solid var(--soc-line); }
+.resource-modal form,
+.category-modal form,
+.resource-modal .incident-form { display: grid; gap: 14px; margin-top: 18px; }
+.resource-modal label,
+.category-modal label { display: grid; gap: 7px; color: var(--soc-muted); font-size: .82rem; }
+.resource-modal label > span,
+.category-modal label > span { color: var(--soc-text); font-weight: 650; }
+.resource-modal .row,
+.category-modal .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.resource-modal button[type="submit"],
+.category-modal button[type="submit"] { border: 0; border-radius: 9px; background: linear-gradient(135deg, #1677d8, #35d4ed); color: white; padding: 10px 14px; font-weight: 700; cursor: pointer; }
+.resource-modal button.secondary,
+.category-modal button.secondary { border: 1px solid var(--soc-line); background: rgba(255,255,255,.05); color: var(--soc-text); }
+.modal-backdrop :is(input, select, textarea) {
+  width: 100%;
+  border: 1px solid var(--soc-line);
+  border-radius: 11px;
+  background: rgba(3, 10, 19, .68);
+  color: var(--soc-text);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.modal-backdrop :is(input, select, textarea):focus {
+  border-color: var(--soc-cyan);
+  background: rgba(7, 25, 42, .9);
+  box-shadow: 0 0 0 3px rgba(71, 215, 255, .12);
+  outline: 0;
+}
+.modal-backdrop :is(input, select, textarea)::placeholder { color: var(--soc-muted); }
+.modal-backdrop select option { background: var(--soc-surface-strong); color: var(--soc-text); }
+@keyframes soc-modal-in { from { opacity: 0; } to { opacity: 1; } }
 .page-shell :is(.stats-grid, .cards-grid, .panel-grid, .notes-list) {
   gap: var(--soc-card-gap);
 }

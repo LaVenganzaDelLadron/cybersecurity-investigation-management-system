@@ -21,6 +21,7 @@ export class ChatAi {
   sending = false;
   error = '';
   editingId: number | null = null;
+  regeneratingId: number | null = null;
   isAdmin = false;
   sidebarOpen = true;
   historySearch = '';
@@ -189,11 +190,19 @@ export class ChatAi {
   regenerate(message: ChatMessage): void {
     if (this.sending) return;
     this.sending = true;
+    this.regeneratingId = message.id;
     this.error = '';
     this.chatService.update(message.id, { message: message.userinput }).subscribe({
       next: (updated) => (this.messages = this.messages.map((item) => item.id === updated.id ? updated : item)),
-      error: () => (this.error = 'Unable to regenerate the response.'),
-      complete: () => (this.sending = false),
+      error: () => {
+        this.error = 'Unable to regenerate the response.';
+        this.sending = false;
+        this.regeneratingId = null;
+      },
+      complete: () => {
+        this.sending = false;
+        this.regeneratingId = null;
+      },
     });
   }
 

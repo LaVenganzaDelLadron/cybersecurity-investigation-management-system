@@ -69,9 +69,9 @@
             <div class="thinking-indicator" *ngIf="sending && message.id === messages[messages.length - 1]?.id"><span>Thinking</span><i></i><i></i><i></i></div>
             <div class="message-actions">
               <button type="button" title="Copy response" (click)="copyResponse(message)">▣ <span>{{ copiedId === message.id ? 'Copied' : 'Copy' }}</span></button>
-              <button type="button" (click)="edit(message)" *ngIf="editingId !== message.id">Edit</button>
-              <button type="button" (click)="regenerate(message)" [disabled]="sending">↻ Regenerate</button>
-              <button type="button" (click)="delete(message)" *ngIf="isAdmin">Delete</button>
+              <button type="button" (click)="edit(message)" [disabled]="sending" *ngIf="editingId !== message.id">Edit</button>
+              <button type="button" (click)="regenerate(message)" [disabled]="sending">↻ {{ regeneratingId === message.id ? 'Regenerating...' : 'Regenerate' }}</button>
+              <button type="button" (click)="delete(message)" [disabled]="sending" *ngIf="isAdmin">Delete</button>
             </div>
             <form *ngIf="editingId === message.id" (ngSubmit)="saveEdit(message)" class="edit-form">
               <textarea [formControl]="form.controls.message" rows="2"></textarea>

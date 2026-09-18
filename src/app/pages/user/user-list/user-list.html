@@ -28,4 +28,4 @@
   </div>
   <p *ngIf="!loading && !users.length">No users found.</p>
 </section>
-<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"><section #userModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="User form" (click)="$event.stopPropagation()"><app-user-form [modal]="true" [userId]="editingId" (saved)="closeModal(); load()" (cancelled)="closeModal()"></app-user-form></section></div>
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"><section #userModal class="resource-modal" tabindex="-1" role="dialog" aria-modal="true" aria-label="User form" (click)="$event.stopPropagation()"><app-user-form [modal]="true" [userId]="editingId" (saved)="closeModal(); load(true)" (cancelled)="closeModal()"></app-user-form></section></div>
